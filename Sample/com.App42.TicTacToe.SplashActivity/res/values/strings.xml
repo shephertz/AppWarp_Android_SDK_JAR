@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email (required if registering)</string>
+    <string name="app_name">App42TicTacToe</string>
+    <string name="signin_button">Sign in</string>
+    <string name="register_button">Register now</string>
+    <string name="game_name_input">New game name</string>
+    <string name="create_game_button">Start Game</string>
+    <string name="welcome">TicTacToe welcomes you</string>
+    <string name="sign_out_button">Signout</string>
+    <string name="submit_button">Submit</string>
+	<string name="reload_button">Reload games</string>
+	<string name="rematch_button">Play again</string>	
+	<string name="join_random_game_button">Join Random Game</string>
+</resources>

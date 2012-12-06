@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/game_background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/login_welcome"
+        android:maxLines="1"
+        android:textSize="25sp"           
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"                                  
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"          
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"        
+        android:text="Sign in to TicTacToe"/>    
+    <EditText    
+        android:id="@+id/uname"    
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/username" />
+    <EditText
+        android:id="@+id/pswd"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="@string/password" />    
+    <EditText        
+        android:id="@+id/email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"        
+        android:hint="@string/email" />
+    
+    <LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"    
+    android:layout_marginTop="50dp"
+    android:gravity="center_horizontal">
+	     <Button
+		     android:layout_height="wrap_content"
+		     android:layout_width="wrap_content"
+		     android:text="@string/signin_button"
+		     android:onClick="onSigninClicked" />
+	     
+	     <Button
+		     android:layout_height="wrap_content"
+		     android:layout_width="wrap_content"
+		     android:text="@string/register_button"
+		     android:onClick="onRegisterClicked" />
+     </LinearLayout>
+      
+</LinearLayout>
