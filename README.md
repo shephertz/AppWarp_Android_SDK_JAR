@@ -3,6 +3,12 @@ AppWarp_Android_SDK_JAR
 
 AppWarp client SDK JAR files for Android.
 
+[Getting Started](https://github.com/shephertz/AppWarp_JAVA_SDK_JAR/wiki/Getting-Started)
+
+[Reference](https://github.com/shephertz/AppWarp_JAVA_SDK_JAR/wiki/Reference)
+
+[FAQ](https://github.com/shephertz/AppWarp_JAVA_SDK_JAR/wiki/FAQ)
+
 Sample
 ========
 The sample game included provides a great way to getting started with building your own games using AppWarp. The Tic Tac Toe sample illustrates how
