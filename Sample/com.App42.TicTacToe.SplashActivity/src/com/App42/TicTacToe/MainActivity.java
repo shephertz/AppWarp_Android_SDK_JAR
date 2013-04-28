@@ -41,7 +41,7 @@ public class MainActivity extends Activity implements AsyncApp42ServiceApi.App42
     		// now connect and join Warp Server 
         	userName.setText(loggedInName);
     		AsyncApp42ServiceApi.getMyWarpClient().addConnectionRequestListener(this);
-    		AsyncApp42ServiceApi.getMyWarpClient().connect();        	
+    		AsyncApp42ServiceApi.getMyWarpClient().connectWithUserName(userName.getText().toString());    	
         }        
     }    
     
@@ -92,7 +92,7 @@ public class MainActivity extends Activity implements AsyncApp42ServiceApi.App42
     		saveCreds();
     		// now connect and join Warp Server    		
     		AsyncApp42ServiceApi.getMyWarpClient().addConnectionRequestListener(this);
-    		AsyncApp42ServiceApi.getMyWarpClient().connect();
+    		AsyncApp42ServiceApi.getMyWarpClient().connectWithUserName(userName.getText().toString());
     	} 
     	else{
     		progressDialog.dismiss();
@@ -109,7 +109,7 @@ public class MainActivity extends Activity implements AsyncApp42ServiceApi.App42
     		saveCreds();
     		// now connect and join Warp Server    		
     		AsyncApp42ServiceApi.getMyWarpClient().addConnectionRequestListener(this);
-    		AsyncApp42ServiceApi.getMyWarpClient().connect();
+    		AsyncApp42ServiceApi.getMyWarpClient().connectWithUserName(userName.getText().toString());
     	}
     	else{
     		progressDialog.dismiss();
@@ -122,22 +122,10 @@ public class MainActivity extends Activity implements AsyncApp42ServiceApi.App42
 	 * 
 	 */
 	@Override
-	public void onJoinZoneDone(ConnectEvent arg0) {
-		if(arg0.getResult() == WarpResponseResultCode.SUCCESS){
-			// yay! we have joined Warp server
-			gotoHomeActivity(userName.getText().toString());
-		}
-	}
-
-	/*
-	 * Warp connection listener callback
-	 * 
-	 */
-	@Override
 	public void onConnectDone(ConnectEvent arg0) {
 		if(arg0.getResult() == WarpResponseResultCode.SUCCESS){
 			// yay! we are connected to Warp server
-			AsyncApp42ServiceApi.getMyWarpClient().joinZone(userName.getText().toString());
+			gotoHomeActivity(userName.getText().toString());
 		}		
 	}
 
