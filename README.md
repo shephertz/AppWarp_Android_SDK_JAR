@@ -1,5 +1,7 @@
-AppWarp_Android_SDK_JAR
+AppWarp Android SDK
 =======================
+
+[![OverView](http://appwarp.shephertz.com/images/appwarp_logo.png)](http://appwarp.shephertz.com)
 
 AppWarp client SDK JAR files for Android.
 
@@ -21,3 +23,5 @@ This sample also illustrates how the AppWarp and App42 cloud APIs work in conjun
 handle user sign-up and login.
 Once the first user is signed in, it can create a room with any desired name and wait for other users to join. Now you can login from another emulator/device
 and select join random room option. This will loop through all the available rooms and join one in which there is a single user. Now the game can begin.
+
+[![](http://blogs.shephertz.com/wp-content/uploads/2013/05/Signup.jpg)](https://apphq.shephertz.com/register?appwarp=true)[![](http://blogs.shephertz.com/wp-content/uploads/2013/05/AlreadyRegistered.jpg)](https://apphq.shephertz.com/)
