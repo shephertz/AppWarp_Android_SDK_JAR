@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MatchMaking</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="Description">
+        This App describe matchmaking benefit in terms of api call and time taken.\n 
+        user have created some via apphq console and categorized room for different 
+        level by adding properties e.g. \nlevel=beginner\n
+        the user want to join some room with specific property.
+    </string>
+	<string name="go_ahead">Connect to Server</string>
+	<string name="without_matchmaking">Without Matchmaking</string>
+	<string name="with_matchmaking">With Matchmaking</string>
+	<string name="get_all">Get All Rooms</string>
+	<string name="get_live_room_info">Get Live Room Info</string>
+	<string name="joinRoom">Join Room</string>
+	<string-array name="level_arrays">
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Expert</item>
+        <item>Excellent</item>
+    </string-array>
+</resources>
