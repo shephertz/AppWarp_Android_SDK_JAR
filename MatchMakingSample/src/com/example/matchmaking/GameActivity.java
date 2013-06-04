@@ -52,7 +52,7 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 		setContentView(R.layout.activity_game);
 		cb1 = (CheckBox)findViewById(R.id.checkBox1);
 		cb2 = (CheckBox)findViewById(R.id.checkBox2);
-		cb3 = (CheckBox)findViewById(R.id.checkBox2);
+		cb3 = (CheckBox)findViewById(R.id.checkBox3);
 		resultTextView = (TextView)findViewById(R.id.resultTextView);
 		withoutStatus = getIntent().getBooleanExtra("isWithout", false);
 		String property = getIntent().getStringExtra("level").toLowerCase();
@@ -114,6 +114,7 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 	@Override
 	public void onGetLiveRoomInfoDone(LiveRoomInfoEvent event) {
 		Hashtable roomProperties = event.getProperties();
+		Log.d("roomProperties"+roomProperties, "propertiesToMatch"+propertiesToMatch);
 		boolean status = hasMatchingProperties(roomProperties, propertiesToMatch);
         if(status){
         	runOnUiThread(new Runnable() {
@@ -157,6 +158,7 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				Log.d("withoutStatus>>>", withoutStatus+"");
 				if(withoutStatus){
 					cb3.setChecked(true);
 				}
@@ -201,14 +203,16 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 	}
 	@Override
 	public void onGetAllRoomsDone(AllRoomsEvent event) {
-		Log.d("onGetAllRoomsDone", "onGetAllRoomsDone");
+		
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				cb1.setChecked(true);
 			}
 		});
+		
 		roomIds = event.getRoomIds();
+		Log.d("onGetAllRoomsDone"+roomIds, "onGetAllRoomsDone"+roomIds.length);
 		if(roomIds!=null && roomIds.length>0){
 			theClient.getLiveRoomInfo(roomIds[0]);
 			roomIdCounter++;

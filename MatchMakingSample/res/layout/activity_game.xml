@@ -26,6 +26,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:clickable="false"
+                android:background="@null"
                 android:text="@string/get_all" />
 
         </LinearLayout>
@@ -44,6 +45,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:clickable="false"
+                android:background="@null"
                 android:text="@string/get_live_room_info" />
 
         </LinearLayout>
@@ -62,6 +64,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:clickable="false"
+                android:background="@null"
                 android:text="@string/joinRoom" />
 
         </LinearLayout>
