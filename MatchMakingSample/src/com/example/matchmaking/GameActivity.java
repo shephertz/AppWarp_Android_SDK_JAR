@@ -31,12 +31,9 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 	private CheckBox cb1;
 	private CheckBox cb2;
 	private CheckBox cb3;
-	
 	private TextView resultTextView;
-	
 	private ProgressDialog progressDialog;
 	private WarpClient theClient;
-	
 	Hashtable<String, Object> propertiesToMatch ;
 	private String roomIdJoined = "";
 	private Timer timer;
@@ -45,7 +42,6 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 	private boolean isOnJoinRoom = false;
 	private String[] roomIds;
 	private int roomIdCounter=0;
-	private int i=0;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -65,7 +61,6 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 		propertiesToMatch.put("level", property);
 		timeCounter = 0;
 		roomIdCounter = 0;
-		i=0;
 		isOnJoinRoom  = false;
 		roomIds = null;
 		load(withoutStatus);
@@ -112,7 +107,7 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 	}
 	
 	@Override
-	public void onGetLiveRoomInfoDone(LiveRoomInfoEvent event) {
+	public void onGetLiveRoomInfoDone(final LiveRoomInfoEvent event) {
 		Hashtable roomProperties = event.getProperties();
 		Log.d("roomProperties"+roomProperties, "propertiesToMatch"+propertiesToMatch);
 		boolean status = hasMatchingProperties(roomProperties, propertiesToMatch);
@@ -128,11 +123,19 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
         	if(roomIdCounter<roomIds.length){
         		theClient.getLiveRoomInfo(roomIds[roomIdCounter]);
         		roomIdCounter++;
+        	}else{
+        		runOnUiThread(new Runnable() {
+    				@Override
+    				public void run() {
+    					resultTextView.setText("\nNo Such Room Found \nTime Taken: "+timeCounter +"\nResult code: "+event.getResult());
+    				}
+    			});
+        		
         	}
         }
 	}
 	public boolean hasMatchingProperties(Hashtable totalProperties, Hashtable propertiesToMatch) {
-        if(propertiesToMatch == null){
+        if(propertiesToMatch == null || totalProperties == null ){
             return false;    
         }
         Enumeration enumKeys = propertiesToMatch.keys();
@@ -153,7 +156,6 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 	@Override
 	public void onJoinRoomDone(final RoomEvent event) {
 		stopTimer();
-		i++;
 		isOnJoinRoom = true;
 		runOnUiThread(new Runnable() {
 			@Override
@@ -164,9 +166,9 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 				}
 				if(event.getResult()==0){// success case
 					roomIdJoined = event.getData().getId();
-					resultTextView.setText("\nTime Taken: "+timeCounter +"\nResult code: "+event.getResult()+"\n RoomID: "+roomIdJoined +" i "+i);
+					resultTextView.setText("\nTime Taken: "+timeCounter +"\nResult code: "+event.getResult()+"\nRoomID: "+roomIdJoined );
 				}else{
-					resultTextView.setText("\nTime Taken: "+timeCounter +"\nResult code: "+event.getResult()+" i "+i);
+					resultTextView.setText("\nRoom join failed \nTime Taken: "+timeCounter +"\nResult code: "+event.getResult());
 				}
 			}
 		});
