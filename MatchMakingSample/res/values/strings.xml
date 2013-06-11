@@ -6,8 +6,8 @@
     <string name="menu_settings">Settings</string>
     <string name="Description">
         This App describe matchmaking benefit in terms of api call and time taken.\n 
-        user have created some via apphq console and categorized room for different 
-        level by adding properties e.g. \nlevel=beginner\n
+        user have created some tooms via apphq console and categorized room for different 
+        topics by adding properties e.g. \ntopic=sports\n
         the user want to join some room with specific property.
     </string>
 	<string name="connectToAppwarp">Connect to Appwarp</string>

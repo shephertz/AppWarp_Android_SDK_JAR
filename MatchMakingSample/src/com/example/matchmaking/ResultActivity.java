@@ -37,6 +37,7 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	private String roomNameJoined = "";
 	private Timer timer;
 	private long timeCounter = 0;
+	private long startTime = 0;
 	private boolean withoutStatus = false;
 	private boolean isOnJoinRoom = false;
 	private String[] roomIds;
@@ -64,8 +65,8 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 		roomIdCounter = 0;
 		isOnJoinRoom  = false;
 		roomIds = null;
+		startTime = System.currentTimeMillis();
 		load(withoutStatus);
-		startTimer();
 		roomIdJoined = "";
 		roomNameJoined = "";
 	}
@@ -78,7 +79,6 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		stopTimer();
 		if(roomIdJoined!=null && roomIdJoined.length()>0 && isOnJoinRoom){
 			theClient.leaveRoom(roomIdJoined);
 		}
@@ -100,7 +100,6 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
 		if(isWithout){
 			theClient.getAllRooms();
 		}else{
@@ -110,7 +109,6 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 		cb1.setChecked(false);
 		cb2.setChecked(false);
 		cb3.setChecked(false);
-		
 	}
 	
 	@Override
@@ -131,6 +129,7 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
         		theClient.getLiveRoomInfo(roomIds[roomIdCounter]);
         		roomIdCounter++;
         	}else{
+        		timeCounter = System.currentTimeMillis()-startTime;
         		runOnUiThread(new Runnable() {
     				@Override
     				public void run() {
@@ -162,7 +161,7 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	
 	@Override
 	public void onJoinRoomDone(final RoomEvent event) {
-		stopTimer();
+		timeCounter = System.currentTimeMillis()-startTime;
 		isOnJoinRoom = true;
 		runOnUiThread(new Runnable() {
 			@Override
@@ -247,25 +246,5 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	public void update(){
 		timeCounter++;
 	}
-	private void startTimer(){
-		if(timer==null){
-			timer  = new Timer();
-			timer.schedule(new CountTimerTask(this), 1 , 1 );
-		}
-	}
-	private void stopTimer(){
-		if(timer!=null){
-			timer.cancel();
-			timer = null;
-		}
-	}
 }
-class CountTimerTask extends TimerTask{
-	ResultActivity gameActivity;
-	CountTimerTask(ResultActivity gameActivity){
-		this.gameActivity = gameActivity;
-	}
-	public void run(){
-		gameActivity.update();
-	}
-}
+

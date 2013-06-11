@@ -69,11 +69,7 @@ public class ChatActivity extends Activity implements RoomRequestListener, Notif
 	}
 	public void onSendClicked(View view){
 		outputScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-		if(inputEditText.getText().toString().length()>0){
-			outputView.append("\n"+Utils.USER_NAME+": "+inputEditText.getText().toString());
-		}
 		theClient.sendChat(inputEditText.getText().toString());
-		
 	}
 	@Override
 	public void onGetLiveRoomInfoDone(final LiveRoomInfoEvent event) {
