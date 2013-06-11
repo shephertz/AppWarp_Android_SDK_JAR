@@ -4,16 +4,14 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllRoomsEvent;
@@ -25,17 +23,18 @@ import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
 import com.shephertz.app42.gaming.multiplayer.client.listener.RoomRequestListener;
 import com.shephertz.app42.gaming.multiplayer.client.listener.ZoneRequestListener;
 
-public class GameActivity extends Activity implements ZoneRequestListener, RoomRequestListener{
+public class ResultActivity extends Activity implements ZoneRequestListener, RoomRequestListener{
 	
 	private long time;
 	private CheckBox cb1;
 	private CheckBox cb2;
 	private CheckBox cb3;
 	private TextView resultTextView;
-	private ProgressDialog progressDialog;
+	private Button chatButton;
 	private WarpClient theClient;
 	Hashtable<String, Object> propertiesToMatch ;
 	private String roomIdJoined = "";
+	private String roomNameJoined = "";
 	private Timer timer;
 	private long timeCounter = 0;
 	private boolean withoutStatus = false;
@@ -45,45 +44,54 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game);
+		Log.d("on create", "Result Activity");
+		setContentView(R.layout.activity_result);
 		cb1 = (CheckBox)findViewById(R.id.checkBox1);
 		cb2 = (CheckBox)findViewById(R.id.checkBox2);
 		cb3 = (CheckBox)findViewById(R.id.checkBox3);
+		chatButton = (Button)findViewById(R.id.chatBtn);
+		chatButton.setEnabled(false);
 		resultTextView = (TextView)findViewById(R.id.resultTextView);
 		withoutStatus = getIntent().getBooleanExtra("isWithout", false);
-		String property = getIntent().getStringExtra("level").toLowerCase();
-		Log.d("property", property+"");
+		String topic = getIntent().getStringExtra("topic").toString();
 		if(propertiesToMatch==null){
 			propertiesToMatch = new Hashtable<String, Object>();
 		}else{
 			propertiesToMatch.clear();
 		}
-		propertiesToMatch.put("level", property);
+		propertiesToMatch.put("topic", topic);
 		timeCounter = 0;
 		roomIdCounter = 0;
 		isOnJoinRoom  = false;
 		roomIds = null;
 		load(withoutStatus);
-		
+		startTimer();
+		roomIdJoined = "";
+		roomNameJoined = "";
 	}
 	public void onStart(){
 		super.onStart();
-		startTimer();
-		roomIdJoined = "";
-		
+		theClient.addZoneRequestListener(this);
+		theClient.addRoomRequestListener(this);
 	}
-	public void onStop(){
-		super.onStop();
-		stopTimer();
-	}
+	
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+		stopTimer();
 		if(roomIdJoined!=null && roomIdJoined.length()>0 && isOnJoinRoom){
-			theClient.removeZoneRequestListener(this);
-			theClient.removeRoomRequestListener(this);
 			theClient.leaveRoom(roomIdJoined);
 		}
+	}
+	public void onStop(){
+		super.onStop();
+		theClient.removeZoneRequestListener(this);
+		theClient.removeRoomRequestListener(this);
+	}
+	public void onChatClicked(View view){
+		Intent intent = new Intent(this, ChatActivity.class);
+		intent.putExtra("roomId", roomIdJoined);
+		startActivity(intent);
 	}
 	 
 	private void load(boolean isWithout){
@@ -92,8 +100,7 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		theClient.addZoneRequestListener(this);
-		theClient.addRoomRequestListener(this);
+		
 		if(isWithout){
 			theClient.getAllRooms();
 		}else{
@@ -160,13 +167,14 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Log.d("withoutStatus>>>", withoutStatus+"");
 				if(withoutStatus){
 					cb3.setChecked(true);
 				}
 				if(event.getResult()==0){// success case
+					chatButton.setEnabled(true);
 					roomIdJoined = event.getData().getId();
-					resultTextView.setText("\nTime Taken: "+timeCounter +"\nResult code: "+event.getResult()+"\nRoomID: "+roomIdJoined );
+					roomNameJoined = event.getData().getName();
+					resultTextView.setText("\nTime Taken: "+timeCounter +"\nResult code: "+event.getResult()+" Success \nRoomID: "+roomIdJoined );
 				}else{
 					resultTextView.setText("\nRoom join failed \nTime Taken: "+timeCounter +"\nResult code: "+event.getResult());
 				}
@@ -253,8 +261,8 @@ public class GameActivity extends Activity implements ZoneRequestListener, RoomR
 	}
 }
 class CountTimerTask extends TimerTask{
-	GameActivity gameActivity;
-	CountTimerTask(GameActivity gameActivity){
+	ResultActivity gameActivity;
+	CountTimerTask(ResultActivity gameActivity){
 		this.gameActivity = gameActivity;
 	}
 	public void run(){

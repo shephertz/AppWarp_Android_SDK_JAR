@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="@drawable/bg_repeat"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -27,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:background="@null"
+                android:textColor="#FFFFFF"
                 android:text="@string/get_all" />
 
         </LinearLayout>
@@ -46,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:background="@null"
+                android:textColor="#FFFFFF"
                 android:text="@string/get_live_room_info" />
 
         </LinearLayout>
@@ -65,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:background="@null"
+                android:textColor="#FFFFFF"
                 android:text="@string/joinRoom" />
 
         </LinearLayout>
@@ -75,6 +79,14 @@
         android:id="@+id/resultTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
         android:text="" />
+
+    <Button
+        android:id="@+id/chatBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onChatClicked"
+        android:text="@string/chat" />
 
 </LinearLayout>

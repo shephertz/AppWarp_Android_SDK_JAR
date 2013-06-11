@@ -2,11 +2,13 @@ package com.example.matchmaking;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,25 +22,31 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 	
 	private Button withoutBtn;
 	private Button withBtn;
-	private Button goBtn;
+	private Button connectToAppwarp;
+	private EditText nameEditText;
 	private TextView descText;
-	private Spinner spinnerLevel;
+	private Spinner spinnerTopic;
 	private WarpClient theClient;
+	private ProgressDialog progressDialog;
     Handler handler = new Handler();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		withoutBtn = (Button)findViewById(R.id.withoutBtn);
 		withBtn = (Button)findViewById(R.id.withBtn);
-		goBtn = (Button)findViewById(R.id.goBtn);
+		connectToAppwarp = (Button)findViewById(R.id.connect);
 		descText = (TextView)findViewById(R.id.descText);
-		spinnerLevel = (Spinner)findViewById(R.id.spinnerLevel);
+		spinnerTopic = (Spinner)findViewById(R.id.spinnerLevel);
+		nameEditText = (EditText)findViewById(R.id.editTextName);
+		
 		withoutBtn.setVisibility(View.GONE);
 		withBtn.setVisibility(View.GONE);
-		spinnerLevel.setVisibility(View.GONE);
+		spinnerTopic.setVisibility(View.GONE);
 		init();
+		
 	}
 	
 	@Override
@@ -49,19 +57,29 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 			theClient.disconnect();
 		}
 	}
-	public void goAhead(View view){
-		theClient.connectWithUserName(""+System.currentTimeMillis());
+	
+	public void onConnectClicked(View view){
+		
+		String userName = nameEditText.getText().toString();
+		if(userName.length()>0){
+			Utils.USER_NAME  = userName;
+			progressDialog = ProgressDialog.show(this, "", "Please wait...");
+			theClient.connectWithUserName(userName);
+		}else{
+			Utils.showToast(this, "Please enter name");
+		}
 	}
+	
 	public void onWithoutClicked(View view){
-		Intent intent = new Intent(this, GameActivity.class);
+		Intent intent = new Intent(this, ResultActivity.class);
 		intent.putExtra("isWithout", true);
-		intent.putExtra("level", spinnerLevel.getSelectedItem().toString());
+		intent.putExtra("topic", spinnerTopic.getSelectedItem().toString());
 		startActivity(intent);
 	}
 	public void onWithClicked(View view){
-		Intent intent = new Intent(this, GameActivity.class);
+		Intent intent = new Intent(this, ResultActivity.class);
 		intent.putExtra("isWithout", false);
-		intent.putExtra("level", spinnerLevel.getSelectedItem().toString());
+		intent.putExtra("topic", spinnerTopic.getSelectedItem().toString());
 		startActivity(intent);
 	}
 	private void init(){
@@ -75,15 +93,17 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 	}
 	@Override
 	public void onConnectDone(final ConnectEvent event) {
+		progressDialog.dismiss();
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
 				if(event.getResult() == 0){
 					Toast.makeText(MainActivity.this, "connection success", Toast.LENGTH_SHORT).show();
+					nameEditText.setVisibility(View.GONE);
 					withoutBtn.setVisibility(View.VISIBLE);
 					withBtn.setVisibility(View.VISIBLE);
-					spinnerLevel.setVisibility(View.VISIBLE);
-					goBtn.setVisibility(View.GONE);
+					spinnerTopic.setVisibility(View.VISIBLE);
+					connectToAppwarp.setVisibility(View.GONE);
 					descText.setVisibility(View.GONE);
 				}else{
 					Toast.makeText(MainActivity.this, "connection failed "+event.getResult(), Toast.LENGTH_SHORT).show();

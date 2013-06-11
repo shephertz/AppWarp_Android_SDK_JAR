@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_repeat"
+    android:orientation="vertical" >
+
+    <Spinner
+        android:id="@+id/onlineUserSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+     />
+
+    <ScrollView 
+	    android:id="@+id/outputScrollView"
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dip" 
+	    android:layout_weight="1"  >
+	    <TextView 
+	        android:id="@+id/outputTextView"
+	        android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="5dp" 
+	        android:paddingRight="5dp" 
+	        android:textColor="#FFFFFF"
+	        android:paddingTop="5dp" />
+	</ScrollView>
+
+	<LinearLayout 
+	    android:id="@+id/linearLayout1"
+	    android:orientation="horizontal" 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" 
+	    android:paddingLeft="5dp" 
+	    android:paddingRight="5dp"
+	    android:paddingBottom="5dp"
+	    android:baselineAligned="true">
+	    <EditText 
+	        android:layout_weight="1" 
+	        android:id="@+id/inputEditText"
+	        android:hint="@string/say"
+	        android:layout_height="45dp" 
+	        android:layout_width="0dip" >
+	    </EditText>
+	    <Button 
+	        android:text="@string/send"
+	        android:layout_height="45dp" 
+	        android:layout_width="wrap_content"
+	        android:onClick="onSendClicked"
+	        android:id="@+id/sendBtn">
+	    </Button>
+    </LinearLayout>
+    
+</LinearLayout>

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/bg_repeat"
     tools:context=".MainActivity" >
 
     <LinearLayout
@@ -20,21 +20,32 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
             android:text="@string/Description" />
+
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/userName"
+            android:ems="10" >
+		<requestFocus />
+        </EditText>
         
         <Button
-            android:id="@+id/goBtn"
+            android:id="@+id/connect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="goAhead"
+            android:onClick="onConnectClicked"
             android:width="150dp"
-            android:text="@string/go_ahead" />
+            android:text="@string/connectToAppwarp" />
 
         <Spinner
             android:id="@+id/spinnerLevel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/level_arrays" />
+            android:entries="@array/topic_arrays" />
         
         <Button
             android:id="@+id/withoutBtn"
