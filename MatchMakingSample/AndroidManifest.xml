@@ -25,7 +25,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.matchmaking.GameActivity" >
+            android:name="com.example.matchmaking.ResultActivity" >
+        </activity>
+        <activity
+            android:name="com.example.matchmaking.ChatActivity" >
         </activity>
     </application>
 
