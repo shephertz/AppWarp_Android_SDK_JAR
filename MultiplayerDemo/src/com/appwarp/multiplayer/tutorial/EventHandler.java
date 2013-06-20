@@ -79,8 +79,10 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 		while(keyEnum.hasMoreElements()){
 			String key = keyEnum.nextElement();
 			String value = properties.get(key).toString();
-			int fruitId = Integer.parseInt(value);
-			gameScreen.placeObject(fruitId, key, userName);
+			if(value.length()>0){
+				int fruitId = Integer.parseInt(value);
+				gameScreen.placeObject(fruitId, key, userName);
+			}
 		}
 	}
 
@@ -119,6 +121,15 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 			}
 		}else{
 			Log.d("hello app", "joined users are null");
+		}
+		Enumeration<String> keyEnum = event.getProperties().keys();
+		while(keyEnum.hasMoreElements()){
+			String key = keyEnum.nextElement();
+			String value = event.getProperties().get(key).toString();
+			if(value.length()>0){
+				int fruitId = Integer.parseInt(value);
+				gameScreen.placeObject(fruitId, key, null);
+			}
 		}
 	}
 
