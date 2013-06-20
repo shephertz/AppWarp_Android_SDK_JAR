@@ -1,5 +1,6 @@
-package com.PerleDevelopment.AndEngine.tutorial;
+package com.appwarp.multiplayer.tutorial;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import org.json.JSONObject;
@@ -70,10 +71,17 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 	}
 
 	@Override
-	public void onUserChangeRoomProperty(RoomData arg0, String arg1,
-			Hashtable arg2) {
-		// TODO Auto-generated method stub
-		
+	public void onUserChangeRoomProperty(RoomData roomData, String userName,Hashtable properties) {
+		if(userName.equals(Utils.userName)){
+			return;
+		}
+		Enumeration<String> keyEnum = properties.keys();
+		while(keyEnum.hasMoreElements()){
+			String key = keyEnum.nextElement();
+			String value = properties.get(key).toString();
+			int fruitId = Integer.parseInt(value);
+			gameScreen.placeObject(fruitId, key, userName);
+		}
 	}
 
 	@Override
@@ -101,12 +109,16 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 	@Override
 	public void onGetLiveRoomInfoDone(LiveRoomInfoEvent event) {
 		String[] joinedUser = event.getJoinedUsers();
-		for(int i=0;i<joinedUser.length;i++){
-			if(joinedUser[i].equals(Utils.userName)){
-				gameScreen.addMorePlayer(true, joinedUser[i]);
-			}else{
-				gameScreen.addMorePlayer(false, joinedUser[i]);
+		if(joinedUser!=null){
+			for(int i=0;i<joinedUser.length;i++){
+				if(joinedUser[i].equals(Utils.userName)){
+					gameScreen.addMorePlayer(true, joinedUser[i]);
+				}else{
+					gameScreen.addMorePlayer(false, joinedUser[i]);
+				}
 			}
+		}else{
+			Log.d("hello app", "joined users are null");
 		}
 	}
 

@@ -1,4 +1,4 @@
-package com.PerleDevelopment.AndEngine.tutorial;
+package com.appwarp.multiplayer.tutorial;
 
 
 import android.app.Activity;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.appwarp.multiplayer.tutorial.R;
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
 import com.shephertz.app42.gaming.multiplayer.client.events.ConnectEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
@@ -97,10 +98,10 @@ public class MainActivity extends Activity implements ConnectionRequestListener,
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				progressDialog.setMessage("Joining room...");
-				if(event.getResult()==0){// success case 
-					theClient.addRoomRequestListener(MainActivity.this);
-					theClient.joinRoomWithProperties(null);// join any room
+				progressDialog.dismiss();
+				if(event.getResult()==0){// go to room  list 
+					Intent intent = new Intent(MainActivity.this, RoomlistActivity.class);
+					startActivity(intent);
 				}else{
 					Utils.showToastAlert(MainActivity.this, "connection failed ");
 				}

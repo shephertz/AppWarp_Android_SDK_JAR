@@ -1,4 +1,4 @@
-package com.PerleDevelopment.AndEngine.tutorial;
+package com.appwarp.multiplayer.tutorial;
 
 import org.andengine.entity.sprite.Sprite;
 

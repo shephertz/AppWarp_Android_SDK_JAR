@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/bg_repeat"
+    android:orientation="vertical" >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onJoinNewRoomClicked"
+        android:text="Join New Room" />
+
+    <ListView
+        android:id="@+id/roomList"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+    </ListView>
+
+</LinearLayout>

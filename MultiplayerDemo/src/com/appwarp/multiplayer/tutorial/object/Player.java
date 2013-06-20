@@ -1,12 +1,14 @@
-package com.PerleDevelopment.AndEngine.tutorial.objects;
+package com.appwarp.multiplayer.tutorial.object;
 
-import org.andengine.engine.handler.physics.PhysicsHandler;
-import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-public abstract class GameObject extends AnimatedSprite {
+import com.appwarp.multiplayer.tutorial.AndEngineTutorialActivity;
 
+public class Player extends GameObject {
+
+	private int fiXBaseVelocity = 100;
+	private int baseVelocity = 100;
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,36 +17,35 @@ public abstract class GameObject extends AnimatedSprite {
 	// Fields
 	// ===========================================================
 
-	public PhysicsHandler mPhysicsHandler;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public GameObject(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+	public Player(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager);
-		this.mPhysicsHandler = new PhysicsHandler(this);
-		this.registerUpdateHandler(this.mPhysicsHandler);
 	}
-
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	protected void onManagedUpdate(float pSecondsElapsed) {
-		move();
+	public void move() {
 
-		super.onManagedUpdate(pSecondsElapsed);
+		this.mPhysicsHandler.setVelocityX(baseVelocity);
+
+		OutOfScreenX();
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	public abstract void move();
+	private void OutOfScreenX() {
+		if (mX > AndEngineTutorialActivity.CAMERA_WIDTH) { // OutOfScreenX (right)
+			baseVelocity = -fiXBaseVelocity;
+		} else if (mX < 0) { // OutOfScreenX (left)
+			baseVelocity = fiXBaseVelocity;
+		}
+	}
 }
