@@ -75,19 +75,22 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 	@Override
 	public void onUserChangeRoomProperty(RoomData roomData, String userName, Hashtable tableProperties) {
 		if(userName.equals(Utils.userName)){
+			// just update the local property table.
+			// no need to update UI as we have already done so.
+			properties = tableProperties;
 			return;
 		}
+		
+		// notification is from a remote user. We need to update UI accordingly.
 		Enumeration<String> keyEnum = tableProperties.keys();
 		while(keyEnum.hasMoreElements()){
 			String key = keyEnum.nextElement();
 			String value = tableProperties.get(key).toString();
 			if(value.length()>0){
-				if(this.properties.get(key).toString().equals(value)){
-					continue;
-				}else{
+				if(!this.properties.get(key).toString().equals(value)){
 					int fruitId = Integer.parseInt(value);
 					gameScreen.placeObject(fruitId, key, userName, false);
-					this.properties.put(key, value);
+					properties.put(key, value);
 				}
 			}
 		}

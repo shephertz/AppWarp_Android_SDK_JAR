@@ -365,7 +365,12 @@ public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements
 	public void updateMove(String userName, float x, float y){
 		if(userMap.get(userName)!=null){
 			Sprite sprite = userMap.get(userName).getSprite();
-			sprite.registerEntityModifier(new MoveModifier(1, sprite.getX(), x, sprite.getY(), y));
+			//float time = 
+			float deltaX = sprite.getX() - x;
+			float deltaY = sprite.getY() - y;
+			float distance = (float) Math.sqrt((deltaX*deltaX)+(deltaY*deltaY));
+			float time = distance/Constants.MonsterSpeed;
+			sprite.registerEntityModifier(new MoveModifier(time, sprite.getX(), x, sprite.getY(), y));
 		}
 	}
 	
