@@ -25,6 +25,8 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 
 	private AndEngineTutorialActivity gameScreen;
 	
+	private Hashtable<String, Object> properties;
+	
 	public EventHandler(AndEngineTutorialActivity gameScreen) {
 		this.gameScreen = gameScreen;
 	}
@@ -71,17 +73,22 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 	}
 
 	@Override
-	public void onUserChangeRoomProperty(RoomData roomData, String userName,Hashtable properties) {
+	public void onUserChangeRoomProperty(RoomData roomData, String userName, Hashtable tableProperties) {
 		if(userName.equals(Utils.userName)){
 			return;
 		}
-		Enumeration<String> keyEnum = properties.keys();
+		Enumeration<String> keyEnum = tableProperties.keys();
 		while(keyEnum.hasMoreElements()){
 			String key = keyEnum.nextElement();
-			String value = properties.get(key).toString();
+			String value = tableProperties.get(key).toString();
 			if(value.length()>0){
-				int fruitId = Integer.parseInt(value);
-				gameScreen.placeObject(fruitId, key, userName, false);
+				if(this.properties.get(key).toString().equals(value)){
+					continue;
+				}else{
+					int fruitId = Integer.parseInt(value);
+					gameScreen.placeObject(fruitId, key, userName, false);
+					this.properties.put(key, value);
+				}
 			}
 		}
 	}
@@ -122,6 +129,7 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 		}else{
 			Log.d("hello app", "joined users are null");
 		}
+		properties = event.getProperties();
 		Enumeration<String> keyEnum = event.getProperties().keys();
 		while(keyEnum.hasMoreElements()){
 			String key = keyEnum.nextElement();
