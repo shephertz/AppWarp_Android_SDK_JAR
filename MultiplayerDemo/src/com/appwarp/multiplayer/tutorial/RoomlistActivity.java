@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
+import com.shephertz.app42.gaming.multiplayer.client.command.WarpResponseResultCode;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllRoomsEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllUsersEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
@@ -91,7 +92,7 @@ public class RoomlistActivity extends Activity implements ZoneRequestListener, R
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				if(event.getResult()==0){// if room created successfully
+				if(event.getResult()==WarpResponseResultCode.SUCCESS){// if room created successfully
 					String roomId = event.getData().getId();
 					Log.d("roomId", event.getResult()+"onCreateRoomDone"+roomId);
 					joinRoom(roomId);

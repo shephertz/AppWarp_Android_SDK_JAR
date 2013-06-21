@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.appwarp.multiplayer.tutorial.R;
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
+import com.shephertz.app42.gaming.multiplayer.client.command.WarpResponseResultCode;
 import com.shephertz.app42.gaming.multiplayer.client.events.ConnectEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
@@ -99,7 +100,7 @@ public class MainActivity extends Activity implements ConnectionRequestListener,
 			@Override
 			public void run() {
 				progressDialog.dismiss();
-				if(event.getResult()==0){// go to room  list 
+				if(event.getResult()==WarpResponseResultCode.SUCCESS){// go to room  list 
 					Intent intent = new Intent(MainActivity.this, RoomlistActivity.class);
 					startActivity(intent);
 				}else{
