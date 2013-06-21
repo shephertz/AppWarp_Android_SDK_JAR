@@ -289,22 +289,22 @@ public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements
 	private void checkForFruitMove(float x, float y){
 		if(selectedFruit!=-1){
 			if(x>0 && x<mFruitTiledTextureRegion1.getWidth() && y>0 && y<mFruitTiledTextureRegion1.getWidth()){
-				placeObject(selectedFruit, "topLeft", null);
+				placeObject(selectedFruit, "topLeft", null, true);
 				return;
 			}else if(x>CAMERA_WIDTH-mFruitTiledTextureRegion2.getWidth() && x<CAMERA_WIDTH && y>0 && y<mFruitTiledTextureRegion2.getWidth()){
-				placeObject(selectedFruit, "topRight", null);
+				placeObject(selectedFruit, "topRight", null, true);
 				return;
 			}else if(x>0 && x<mFruitTiledTextureRegion3.getWidth() && y>CAMERA_HEIGHT-mFruitTiledTextureRegion3.getHeight() && y<CAMERA_HEIGHT){
-				placeObject(selectedFruit, "bottomLeft", null);
+				placeObject(selectedFruit, "bottomLeft", null, true);
 				return;
 			}else if(x>CAMERA_WIDTH-mFruitTiledTextureRegion4.getWidth() && x<CAMERA_WIDTH && y>CAMERA_HEIGHT-mFruitTiledTextureRegion4.getHeight() && y<CAMERA_HEIGHT){
-				placeObject(selectedFruit, "bottomRight", null);
+				placeObject(selectedFruit, "bottomRight", null, true);
 				return;
 			}
 		}
 	}
 	
-	public synchronized void placeObject(final int selectedObject, final String destination, final String userName){
+	public synchronized void placeObject(final int selectedObject, final String destination, final String userName, boolean updateProperty){
 		Sprite sprite=null;
 		float xDest = 0;
 		float yDest = 0;
@@ -348,7 +348,9 @@ public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements
 		objectMap.put(destination, sprite);
 		this.mMainScene.attachChild(sprite);
 		sprite.registerEntityModifier(new MoveModifier(1, sprite.getX(), xDest, sprite.getY(), yDest));
-		updateProperty(destination, selectedFruit+"");
+		if(updateProperty){
+			updateProperty(destination, selectedObject+"");
+		}
 		selectedFruit = -1;
 		runOnUiThread(new Runnable() {
 			@Override

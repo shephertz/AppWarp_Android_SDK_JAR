@@ -81,7 +81,7 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 			String value = properties.get(key).toString();
 			if(value.length()>0){
 				int fruitId = Integer.parseInt(value);
-				gameScreen.placeObject(fruitId, key, userName);
+				gameScreen.placeObject(fruitId, key, userName, false);
 			}
 		}
 	}
@@ -128,7 +128,7 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 			String value = event.getProperties().get(key).toString();
 			if(value.length()>0){
 				int fruitId = Integer.parseInt(value);
-				gameScreen.placeObject(fruitId, key, null);
+				gameScreen.placeObject(fruitId, key, null, false);
 			}
 		}
 	}
