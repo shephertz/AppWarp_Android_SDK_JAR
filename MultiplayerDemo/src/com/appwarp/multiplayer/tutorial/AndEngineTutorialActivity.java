@@ -237,6 +237,7 @@ public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements
 			tiledTextureRegion = mPlayerTiledTextureRegion4;
 		}
 		final Sprite face = new Sprite(ramdom.nextInt(CAMERA_WIDTH), ramdom.nextInt(CAMERA_HEIGHT), tiledTextureRegion, this.getVertexBufferObjectManager());
+		face.setSize(75, 75);
 		this.mMainScene.attachChild(face);
 		User user = new User(face.getX(), face.getY(), face);
 		userMap.put(userName, user);
@@ -365,7 +366,6 @@ public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements
 	public void updateMove(String userName, float x, float y){
 		if(userMap.get(userName)!=null){
 			Sprite sprite = userMap.get(userName).getSprite();
-			//float time = 
 			float deltaX = sprite.getX() - x;
 			float deltaY = sprite.getY() - y;
 			float distance = (float) Math.sqrt((deltaX*deltaX)+(deltaY*deltaY));
