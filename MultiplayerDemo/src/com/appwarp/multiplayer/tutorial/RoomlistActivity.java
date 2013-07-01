@@ -194,5 +194,15 @@ public class RoomlistActivity extends Activity implements ZoneRequestListener, R
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void onLockPropertyDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onUnlockPropertyDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

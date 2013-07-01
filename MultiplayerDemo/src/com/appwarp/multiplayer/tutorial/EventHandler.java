@@ -14,6 +14,7 @@ import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LiveUserInfoEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LobbyData;
 import com.shephertz.app42.gaming.multiplayer.client.events.MatchedRoomsEvent;
+import com.shephertz.app42.gaming.multiplayer.client.events.MoveEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomData;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.UpdateEvent;
@@ -73,7 +74,7 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 	}
 
 	@Override
-	public void onUserChangeRoomProperty(RoomData roomData, String userName, Hashtable tableProperties) {
+	public void onUserChangeRoomProperty(RoomData roomData, String userName, Hashtable<String, Object> tableProperties, Hashtable<String, String> lockProperties) {
 		if(userName.equals(Utils.userName)){
 			// just update the local property table.
 			// no need to update UI as we have already done so.
@@ -175,6 +176,24 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 
 	@Override
 	public void onUpdatePropertyDone(LiveRoomInfoEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMoveCompleted(MoveEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onLockPropertyDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUnlockPropertyDone(byte arg0) {
 		// TODO Auto-generated method stub
 		
 	}
