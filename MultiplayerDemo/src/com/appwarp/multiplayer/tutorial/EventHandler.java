@@ -187,13 +187,13 @@ public class EventHandler implements RoomRequestListener, NotifyListener{
 	}
 
 	@Override
-	public void onLockPropertyDone(byte arg0) {
+	public void onLockPropertiesDone(byte arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onUnlockPropertyDone(byte arg0) {
+	public void onUnlockPropertiesDone(byte arg0) {
 		// TODO Auto-generated method stub
 		
 	}
