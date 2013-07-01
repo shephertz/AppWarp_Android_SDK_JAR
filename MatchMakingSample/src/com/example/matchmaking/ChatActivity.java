@@ -19,6 +19,7 @@ import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
 import com.shephertz.app42.gaming.multiplayer.client.events.ChatEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LobbyData;
+import com.shephertz.app42.gaming.multiplayer.client.events.MoveEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomData;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.UpdateEvent;
@@ -183,12 +184,7 @@ public class ChatActivity extends Activity implements RoomRequestListener, Notif
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
-	public void onUserChangeRoomProperty(RoomData arg0, String arg1,
-			Hashtable arg2) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	@Override
 	public void onUserJoinedLobby(LobbyData arg0, String arg1) {
 		// TODO Auto-generated method stub
@@ -220,6 +216,27 @@ public class ChatActivity extends Activity implements RoomRequestListener, Notif
 				fillDataInSpinner(null);
 			}
 		});
+		
+	}
+	@Override
+	public void onMoveCompleted(MoveEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onUserChangeRoomProperty(RoomData arg0, String arg1,
+			Hashtable<String, Object> arg2, Hashtable<String, String> arg3) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onLockPropertyDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onUnlockPropertyDone(byte arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 	

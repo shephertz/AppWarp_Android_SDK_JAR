@@ -169,5 +169,17 @@ public class MainActivity extends Activity implements ConnectionRequestListener,
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void onLockPropertyDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUnlockPropertyDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
