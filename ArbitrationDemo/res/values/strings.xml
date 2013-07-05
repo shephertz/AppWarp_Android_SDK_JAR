@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, AndEngineTutorialActivity!</string>
+    <string name="app_name">Arbitration Demo</string>
+    <string name="playGame">Play Game</string>
+    <string name="chooseMonster">Choose Monster</string>
+    <string name="alertSelect">Please select monster to start game</string>
+    <string name="enterName">Enter Your Name</string>
+    <string name="joinRoom">Join Room</string>
+
+</resources>
