@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:orientation="vertical"
+    android:layout_height="fill_parent">
+
+        
+    <TextView
+        android:id="@+id/turn_player_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="20dp"
+        android:text="Turn Player" />
+    
+    <LinearLayout        
+        android:id="@+id/Row1"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/cell_00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:src="@drawable/empty_cell"
+            android:onClick="onCellClicked" />        
+        <ImageButton
+            android:id="@+id/cell_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:src="@drawable/empty_cell"
+            android:onClick="onCellClicked"/>
+        <ImageButton
+            android:id="@+id/cell_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:src="@drawable/empty_cell"
+            android:onClick="onCellClicked"/> 
+        <ImageButton
+            android:id="@+id/cell_03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" /> 
+        <ImageButton
+            android:id="@+id/cell_04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />    
+        <ImageButton
+            android:id="@+id/cell_05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />                           
+    </LinearLayout>  
+    <LinearLayout        
+        android:id="@+id/Row2"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/cell_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:src="@drawable/empty_cell"
+            android:onClick="onCellClicked"/>
+        <ImageButton
+            android:id="@+id/cell_11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />
+        <ImageButton
+            android:id="@+id/cell_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />  
+        <ImageButton
+            android:id="@+id/cell_13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" /> 
+        <ImageButton
+            android:id="@+id/cell_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />    
+        <ImageButton
+            android:id="@+id/cell_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />                          
+    </LinearLayout>
+    <LinearLayout        
+        android:id="@+id/Row3"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/cell_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />
+        <ImageButton
+            android:id="@+id/cell_21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />
+        <ImageButton
+            android:id="@+id/cell_22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" /> 
+        <ImageButton
+            android:id="@+id/cell_23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" /> 
+        <ImageButton
+            android:id="@+id/cell_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />    
+        <ImageButton
+            android:id="@+id/cell_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />                                              
+    </LinearLayout>    
+    <LinearLayout        
+        android:id="@+id/Row4"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/cell_30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />
+        <ImageButton
+            android:id="@+id/cell_31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />
+        <ImageButton
+            android:id="@+id/cell_32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" /> 
+        <ImageButton
+            android:id="@+id/cell_33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" /> 
+        <ImageButton
+            android:id="@+id/cell_34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />    
+        <ImageButton
+            android:id="@+id/cell_35"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />                                              
+    </LinearLayout>            
+    <LinearLayout        
+        android:id="@+id/Row5"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/cell_40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />
+        <ImageButton
+            android:id="@+id/cell_41"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />
+        <ImageButton
+            android:id="@+id/cell_42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" /> 
+        <ImageButton
+            android:id="@+id/cell_43"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" /> 
+        <ImageButton
+            android:id="@+id/cell_44"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />    
+        <ImageButton
+            android:id="@+id/cell_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />                                              
+    </LinearLayout>
+    <LinearLayout        
+        android:id="@+id/Row6"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/cell_50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />
+        <ImageButton
+            android:id="@+id/cell_51"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />
+        <ImageButton
+            android:id="@+id/cell_52"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" /> 
+        <ImageButton
+            android:id="@+id/cell_53"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" /> 
+        <ImageButton
+            android:id="@+id/cell_54"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />    
+        <ImageButton
+            android:id="@+id/cell_55"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:state_enabled="false"
+            android:onClick="onCellClicked"
+            android:src="@drawable/empty_cell" />                                              
+    </LinearLayout>        
+    
+</LinearLayout>
