@@ -222,7 +222,12 @@ public class MainActivity extends Activity implements ConnectionRequestListener 
         public void onSetCustomUserDataDone(LiveUserInfoEvent arg0) {
             // TODO Auto-generated method stub
             
-        }
+        }        
+    }
+
+    @Override
+    public void onInitUDPDone(byte arg0) {
+        // TODO Auto-generated method stub
         
     }
 }

@@ -1,7 +1,10 @@
 package com.turnbased.appwarp.longestline;
 
 import com.sample.turnbasedtictactoe.R;
+import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.MoveEvent;
+import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
+import com.shephertz.app42.gaming.multiplayer.client.listener.RoomRequestListener;
 import com.turnbased.appwarp.longestline.Utilities.GameState;
 import com.turnbased.appwarp.longestline.Utilities.Sequence;
 
@@ -15,7 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class GameActivity extends Activity {
+public class GameActivity extends Activity implements RoomRequestListener {
 
     private TextView turnText;
     private Handler UIThreadHandler = new Handler();
@@ -35,6 +38,8 @@ public class GameActivity extends Activity {
     public void onStart(){
         super.onStart();
         messenger.start();
+        Utilities.getWarpClient().addRoomRequestListener(this); 
+        Utilities.getWarpClient().getLiveRoomInfo(Utilities.game_room_id);
         if(Utilities.isLocalPlayerX){
             isLocalTurn = true;
             turnText.setText("Next Turn "+Utilities.localUsername);
@@ -46,6 +51,7 @@ public class GameActivity extends Activity {
         super.onStop();
         this.finish();
         messenger.stop();
+        Utilities.getWarpClient().removeRoomRequestListener(this);
     }
     
     public void onCellClicked(View view) {
@@ -130,16 +136,16 @@ public class GameActivity extends Activity {
     }
     
     public void onMoveCompleted(final MoveEvent evt) {
+        if(evt.getNextTurn().equals(Utilities.localUsername)){                    
+            isLocalTurn = true;                    
+        }
+        else{
+            isLocalTurn = false;
+        }
+        
         UIThreadHandler.post(new Runnable() {
             @Override
-            public void run() {                    
-                if(evt.getNextTurn().equals(Utilities.localUsername)){                    
-                    isLocalTurn = true;                    
-                }
-                else{
-                    isLocalTurn = false;
-                }
-                
+            public void run() {               
                 if(evt.getMoveData().length() > 0){
                     boardState = evt.getMoveData();
                     Result longestCrossRes = new Result(0,0,0,Sequence.COLUMN);
@@ -159,20 +165,34 @@ public class GameActivity extends Activity {
                     }
                     else{
                         handleLocalWin();
-                        highlightWinner(longestCrossRes.length > longestCircleRes.length ? longestCrossRes : longestCircleRes);
-                        Utilities.getWarpClient().deleteRoom(Utilities.game_room_id);
+                        highlightWinner(longestCrossRes.length > longestCircleRes.length ? longestCrossRes : longestCircleRes);                        
                     }
                 }
-                else if(!isLocalTurn){
-                    handleRemoteTurnExpired();
-                }
+                else{
+                    turnText.setText("Next Turn "+evt.getNextTurn());                    
+                    handleTurnExpired(evt.getSender());
+                }                
             }
-        });         
+        });        
+    }
+    
+    public void onGameStarted(final String nextTurn){
+        if(nextTurn.equals(Utilities.localUsername)){                    
+            isLocalTurn = true;                    
+        }
+        else{
+            isLocalTurn = false;
+        }       
+        UIThreadHandler.post(new Runnable() {
+            @Override
+            public void run() {   
+                turnText.setText("Next Turn "+nextTurn);
+            }
+        });        
     }
 
-    private void handleRemoteTurnExpired() {
-        // TODO Auto-generated method stub
-        
+    private void handleTurnExpired(String expiredUser) {
+        Toast.makeText(this, expiredUser+" turn expired", Toast.LENGTH_SHORT).show();
     }
     
     private void highlightWinner(Result winner)
@@ -205,35 +225,26 @@ public class GameActivity extends Activity {
     }
     
     private void handleLocalWin(){
+        Utilities.getWarpClient().deleteRoom(Utilities.game_room_id);
         Toast.makeText(this, "you won!", Toast.LENGTH_SHORT).show();
         Utilities.isLocalPlayerX = isLocalTurn;
-        turnText.setText("You Won");
-        //redrawBoard();
+        GameActivity.this.finish();
     }
     
     private void handleLocalLoss(){
         Toast.makeText(this, "you lost!", Toast.LENGTH_LONG).show();
-        Utilities.isLocalPlayerX = isLocalTurn;
-        turnText.setText("You Lost");
-        //redrawBoard();
+        Utilities.isLocalPlayerX = isLocalTurn;        
+        GameActivity.this.finish();
     }
     
     private void handleDraw(){
         Toast.makeText(this, "draw!", Toast.LENGTH_LONG).show();
-        turnText.setText("Game Drawn");
         Utilities.isLocalPlayerX = isLocalTurn;
-        //redrawBoard();
+        GameActivity.this.finish();
     }
     
-    private void redrawBoard() {        
-        boardState = Utilities.EMPTY_BOARD_STATE;
-        updateUI();
-    }
-    
-    void handleRemoteLeft(){
-        
-        Utilities.getWarpClient().deleteRoom(Utilities.game_room_id);
-        
+    void handleRemoteLeft(){        
+        Utilities.getWarpClient().deleteRoom(Utilities.game_room_id);        
         UIThreadHandler.post(new Runnable() {
             @Override
             public void run() {   
@@ -241,6 +252,63 @@ public class GameActivity extends Activity {
                 GameActivity.this.finish();
             }
         });
+    }
+
+    @Override
+    public void onGetLiveRoomInfoDone(LiveRoomInfoEvent evt) {        
+        int numUsers = evt.getJoinedUsers().length;
+        Log.d("AppWarpTrace", "onGetLiveRoomInfoDone numUsers "+numUsers);
+        if(numUsers > 1){
+            Utilities.getWarpClient().startGame();
+        }
+    }
+
+    @Override
+    public void onJoinRoomDone(RoomEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onLeaveRoomDone(RoomEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onLockPropertiesDone(byte arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onSetCustomRoomDataDone(LiveRoomInfoEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onSubscribeRoomDone(RoomEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onUnSubscribeRoomDone(RoomEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onUnlockPropertiesDone(byte arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onUpdatePropertyDone(LiveRoomInfoEvent arg0) {
+        // TODO Auto-generated method stub
+        
     }
 
 }
