@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.andengineappwarp.multiplayer"
+    package="app.appwarp.multiplayer"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme" >
        
         <activity
-            android:name=".MainActivity"
+            android:name="app.appwarp.multiplayer.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,13 +26,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RoomlistActivity" >
+            android:name="app.appwarp.multiplayer.RoomlistActivity" >
         </activity>
         <activity
-            android:name=".SelectionActivity" >
+            android:name="app.appwarp.multiplayer.MonsterSelectionActivity" >
         </activity>
         <activity
-           android:name=".AndEngineTutorialActivity" >
+           android:name="app.appwarp.multiplayer.GameActivity" >
         </activity>
     
     </application>

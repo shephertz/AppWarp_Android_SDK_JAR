@@ -1,4 +1,4 @@
-package com.example.andengineappwarp.multiplayer;
+package app.appwarp.multiplayer;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomData;
 
 public class RoomlistAdapter extends BaseAdapter {

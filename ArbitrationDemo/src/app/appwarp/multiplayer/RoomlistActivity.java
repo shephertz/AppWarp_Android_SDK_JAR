@@ -1,5 +1,6 @@
-package com.example.andengineappwarp.multiplayer;
+package app.appwarp.multiplayer;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import android.app.Activity;
@@ -8,9 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import app.appwarp.multiplayer.handler.EventHandler;
 
-import com.example.andengineappwarp.multiplayer.handler.ConnectionHandler;
-import com.example.andengineappwarp.multiplayer.handler.ResponseHandler;
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomData;
 
@@ -41,16 +41,16 @@ public class RoomlistActivity extends Activity {
     }
 	public void onStart(){
 		super.onStart();
-		ResponseHandler.getInstance().setResultActivity(this);
+		EventHandler.getInstance().setResultActivity(this);
 		progressDialog = ProgressDialog.show(this,"","Pleaes wait...");
-		theClient.addZoneRequestListener(ResponseHandler.getInstance());
-		theClient.addRoomRequestListener(ResponseHandler.getInstance());
-		theClient.addNotificationListener(ResponseHandler.getInstance());
+		theClient.addZoneRequestListener(EventHandler.getInstance());
+		theClient.addRoomRequestListener(EventHandler.getInstance());
+		theClient.addNotificationListener(EventHandler.getInstance());
 		theClient.getRoomInRange(1,1);// trying to get room with at least one user
 	}
 	public void onStop(){
 		super.onStop();
-		theClient.removeZoneRequestListener(ResponseHandler.getInstance());
+		theClient.removeZoneRequestListener(EventHandler.getInstance());
 	}
 	
 	@Override
@@ -64,7 +64,7 @@ public class RoomlistActivity extends Activity {
 	public void onJoinNewRoomClicked(View view){
 		progressDialog = ProgressDialog.show(this,"","Pleaes wait...");
 		progressDialog.setCancelable(true);
-		Hashtable<String, Object> properties = new Hashtable<String, Object>();
+		HashMap<String, Object> properties = new HashMap<String, Object>();
 		properties.put("red", "");
 		properties.put("green", "");
 		properties.put("blue", "");
@@ -92,7 +92,7 @@ public class RoomlistActivity extends Activity {
 	}
 	
 	public void goToSelectionScreen(String roomId){
-		Intent intent = new Intent(RoomlistActivity.this, SelectionActivity.class);
+		Intent intent = new Intent(RoomlistActivity.this, MonsterSelectionActivity.class);
 		intent.putExtra("roomId", roomId);
 		startActivity(intent);
 	}

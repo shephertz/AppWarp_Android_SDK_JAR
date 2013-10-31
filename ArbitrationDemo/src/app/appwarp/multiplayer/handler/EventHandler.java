@@ -1,17 +1,19 @@
-package com.example.andengineappwarp.multiplayer.handler;
+package app.appwarp.multiplayer.handler;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.util.Log;
+import app.appwarp.multiplayer.GameActivity;
+import app.appwarp.multiplayer.MonsterSelectionActivity;
+import app.appwarp.multiplayer.RoomlistActivity;
+import app.appwarp.multiplayer.Utils;
 
-import com.example.andengineappwarp.multiplayer.AndEngineTutorialActivity;
-import com.example.andengineappwarp.multiplayer.RoomlistActivity;
-import com.example.andengineappwarp.multiplayer.SelectionActivity;
-import com.example.andengineappwarp.multiplayer.Utils;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllRoomsEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllUsersEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.ChatEvent;
@@ -27,18 +29,18 @@ import com.shephertz.app42.gaming.multiplayer.client.listener.NotifyListener;
 import com.shephertz.app42.gaming.multiplayer.client.listener.RoomRequestListener;
 import com.shephertz.app42.gaming.multiplayer.client.listener.ZoneRequestListener;
 
-public class ResponseHandler implements ZoneRequestListener, RoomRequestListener, NotifyListener{
+public class EventHandler implements ZoneRequestListener, RoomRequestListener, NotifyListener{
 
 	private Activity resultActivity;
-	private static ResponseHandler responseHandler;
+	private static EventHandler responseHandler;
 	
-	private ResponseHandler(){
+	private EventHandler(){
 		
 	}
 	
-	public static ResponseHandler getInstance(){
+	public static EventHandler getInstance(){
 		if(responseHandler==null){
-			responseHandler = new ResponseHandler();
+			responseHandler = new EventHandler();
 		}
 		return responseHandler;
 	}
@@ -49,10 +51,8 @@ public class ResponseHandler implements ZoneRequestListener, RoomRequestListener
 	
 	@Override
 	public void onChatReceived(ChatEvent event) {
-		
-		
-		if (resultActivity instanceof AndEngineTutorialActivity) {
-			AndEngineTutorialActivity gameScreen = (AndEngineTutorialActivity) resultActivity;
+		if (resultActivity instanceof GameActivity) {
+			GameActivity gameScreen = (GameActivity) resultActivity;
 			String sender = event.getSender();
 			if(sender.equals(Utils.userName)==false){// if not same user
 				String message = event.getMessage();
@@ -60,7 +60,7 @@ public class ResponseHandler implements ZoneRequestListener, RoomRequestListener
 					JSONObject object = new JSONObject(message);
 					float xCord = Float.parseFloat(object.get("X")+"");
 					float yCord = Float.parseFloat(object.get("Y")+"");
-					gameScreen.updateMove(sender, xCord, yCord);
+					gameScreen.updateMove(true, sender, xCord, yCord);
 				}catch(Exception e){
 					e.printStackTrace();
 				}
@@ -93,13 +93,12 @@ public class ResponseHandler implements ZoneRequestListener, RoomRequestListener
 	}
 
 	@Override
-	public void onUserChangeRoomProperty(final RoomData roomData, final String userName, final Hashtable<String, Object> tableProperties, final Hashtable<String, String> lockProperties) {
+	public void onUserChangeRoomProperty(final RoomData roomData, final String userName, final HashMap<String, Object> tableProperties, final HashMap<String, String> lockProperties) {
 		
-		if (resultActivity instanceof AndEngineTutorialActivity) {
-			final AndEngineTutorialActivity gameScreen = (AndEngineTutorialActivity) resultActivity;
-			Enumeration<String> keyEnum = tableProperties.keys();
-			while(keyEnum.hasMoreElements()){
-				final String key = keyEnum.nextElement();
+		if (resultActivity instanceof GameActivity) {
+			final GameActivity gameScreen = (GameActivity) resultActivity;
+			for (Map.Entry<String, Object> entry : tableProperties.entrySet()) { 
+				final String key = entry.getKey();
 				final String owner = lockProperties.get(key);
 				if(owner!=null && owner.length()>0){
 					gameScreen.runOnUiThread(new Runnable() {
@@ -113,9 +112,10 @@ public class ResponseHandler implements ZoneRequestListener, RoomRequestListener
 						}
 					});
 				}
-			}
-		}else if (resultActivity instanceof SelectionActivity) {
-			final SelectionActivity selectionScreen = (SelectionActivity) resultActivity;
+			
+            }
+		}else if (resultActivity instanceof MonsterSelectionActivity) {
+			final MonsterSelectionActivity selectionScreen = (MonsterSelectionActivity) resultActivity;
 			selectionScreen.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -144,20 +144,18 @@ public class ResponseHandler implements ZoneRequestListener, RoomRequestListener
 
 	@Override
 	public void onUserLeftRoom(RoomData roomData, String name) {
-		if (resultActivity instanceof AndEngineTutorialActivity) {
-			AndEngineTutorialActivity gameScreen = (AndEngineTutorialActivity) resultActivity;
+		if (resultActivity instanceof GameActivity) {
+			GameActivity gameScreen = (GameActivity) resultActivity;
 			gameScreen.handleLeave(name);
 		}
 	}
 
 	@Override
 	public void onGetLiveRoomInfoDone(final LiveRoomInfoEvent event) {
-
-		if (resultActivity instanceof AndEngineTutorialActivity) {
-			final AndEngineTutorialActivity gameScreen = (AndEngineTutorialActivity) resultActivity;
-			Enumeration<String> keyEnum = event.getProperties().keys();
-			while(keyEnum.hasMoreElements()){
-				final String key = keyEnum.nextElement();
+		if (resultActivity instanceof GameActivity) {
+			final GameActivity gameScreen = (GameActivity) resultActivity;
+			for (Map.Entry<String, Object> entry : event.getProperties().entrySet()) { 
+				final String key = entry.getKey();
 				final String owner = event.getLockProperties().get(key);
 				if(owner!=null && owner.length()>0){
 					gameScreen.runOnUiThread(new Runnable() {
@@ -171,9 +169,10 @@ public class ResponseHandler implements ZoneRequestListener, RoomRequestListener
 						}
 					});
 				}
-			}
-		}else if(resultActivity instanceof SelectionActivity){
-			final SelectionActivity selectionScreen = (SelectionActivity) resultActivity;
+			
+            }
+		}else if(resultActivity instanceof MonsterSelectionActivity){
+			final MonsterSelectionActivity selectionScreen = (MonsterSelectionActivity) resultActivity;
 			selectionScreen.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -190,8 +189,8 @@ public class ResponseHandler implements ZoneRequestListener, RoomRequestListener
 	@Override
 	public void onJoinRoomDone(final RoomEvent event) {
 		
-		if (resultActivity instanceof SelectionActivity) {
-			final SelectionActivity selectionScreeen = (SelectionActivity) resultActivity;
+		if (resultActivity instanceof MonsterSelectionActivity) {
+			final MonsterSelectionActivity selectionScreeen = (MonsterSelectionActivity) resultActivity;
 			selectionScreeen.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -209,8 +208,8 @@ public class ResponseHandler implements ZoneRequestListener, RoomRequestListener
 	@Override
 	public void onLeaveRoomDone(final RoomEvent event) {
 		
-		if (resultActivity instanceof AndEngineTutorialActivity) {
-			final AndEngineTutorialActivity gameScreen = (AndEngineTutorialActivity) resultActivity;
+		if (resultActivity instanceof GameActivity) {
+			final GameActivity gameScreen = (GameActivity) resultActivity;
 			gameScreen.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -254,8 +253,8 @@ public class ResponseHandler implements ZoneRequestListener, RoomRequestListener
 	@Override
 	public void onLockPropertiesDone(final byte result) {
 		
-		if (resultActivity instanceof SelectionActivity) {
-			final SelectionActivity selectionScreen = (SelectionActivity) resultActivity;
+		if (resultActivity instanceof MonsterSelectionActivity) {
+			final MonsterSelectionActivity selectionScreen = (MonsterSelectionActivity) resultActivity;
 			selectionScreen.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -349,6 +348,30 @@ public class ResponseHandler implements ZoneRequestListener, RoomRequestListener
 
 	@Override
 	public void onMoveCompleted(MoveEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onGameStarted(String arg0, String arg1, String arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onGameStopped(String arg0, String arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUserPaused(String arg0, boolean arg1, String arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUserResumed(String arg0, boolean arg1, String arg2) {
 		// TODO Auto-generated method stub
 		
 	}

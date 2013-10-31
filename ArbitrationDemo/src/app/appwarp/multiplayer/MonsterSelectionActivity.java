@@ -1,7 +1,9 @@
-package com.example.andengineappwarp.multiplayer;
+package app.appwarp.multiplayer;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -10,12 +12,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import app.appwarp.multiplayer.handler.EventHandler;
 
-import com.example.andengineappwarp.multiplayer.handler.ResponseHandler;
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
 
 
-public class SelectionActivity extends Activity {
+public class MonsterSelectionActivity extends Activity {
 
 	private int selectedMonster = -1;
 	private WarpClient theClient;
@@ -48,7 +50,7 @@ public class SelectionActivity extends Activity {
     }
 	
 	private void loadRoomData(){
-		ResponseHandler.getInstance().setResultActivity(this);
+		EventHandler.getInstance().setResultActivity(this);
 		progressDialog =  ProgressDialog.show(this, "", "loading room data...");
 		theClient.subscribeRoom(roomId);
 		theClient.getLiveRoomInfo(roomId);
@@ -96,7 +98,7 @@ public class SelectionActivity extends Activity {
 	public void onRoomJoined(boolean success){
 		progressDialog.dismiss();
 		if(success){
-			Hashtable<String, Object> table = new Hashtable<String, Object>();
+			HashMap<String, Object> table = new HashMap<String, Object>();
 			Log.d("Utils.userName", Utils.userName);
 			if(selectedMonster==1){
 				table.put("red", Utils.userName);
@@ -116,29 +118,27 @@ public class SelectionActivity extends Activity {
 		progressDialog.dismiss();
 		if(success){
 			finish();
-			Intent intent = new Intent(this, AndEngineTutorialActivity.class);
+			Intent intent = new Intent(this, GameActivity.class);
 			intent.putExtra("roomId", roomId);
 			startActivity(intent);
 		}
 	}
 	
-	public void handleLockInfo(Hashtable<String, Object> properties, Hashtable<String, String> lockProperties){
+	public void handleLockInfo(HashMap<String, Object> properties, HashMap<String, String> lockProperties){
 //		Log.d("properties", properties+"");
 //		Log.d("lockProperties", lockProperties+"");
 		if(progressDialog!=null){
 			progressDialog.dismiss();
 		}
 		if(properties!=null && lockProperties!=null){
-			Enumeration<String> keyEnum = properties.keys();
-			while(keyEnum.hasMoreElements()){
-				String key = keyEnum.nextElement();
-				String owner = lockProperties.get(key);
+			for (Map.Entry<String, String> entry : lockProperties.entrySet()) { 
+                String owner = lockProperties.get(entry.getKey());
 				if(owner!=null && owner.toString().length()>0){
-					handleMonster(key, false);
+					handleMonster(entry.getKey(), false);
 				}else{
-					handleMonster(key, true);
+					handleMonster(entry.getKey(), true);
 				}
-			}
+            }
 		}
 		
 	}

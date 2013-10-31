@@ -3,30 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#58FAF4"
+    android:background="#C0E9BD"
     android:orientation="horizontal" >
       
     <TextView
         android:id="@+id/item_roomId"
-        android:layout_width="wrap_content"
+        android:layout_width="212dp"
         android:layout_height="wrap_content"
-        android:minWidth="120dp"
-        android:textSize="15sp"
         android:layout_gravity="center"
+        android:ellipsize="end"
+        android:minWidth="120dp"
         android:textColor="#000000"
-        android:ellipsize="end" />
+        android:textSize="15sp" />
     
      <Button
-        android:id="@+id/item_joinButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="11sp"
-        android:layout_gravity="right"
-        android:textStyle="bold"
-        android:clickable="true"
-        android:text="@string/joinRoom"
-        android:background="#81F781"
-        android:textColor="#000000"
-        android:ellipsize="end" /> 	    
+         android:id="@+id/item_joinButton"
+         android:layout_width="104dp"
+         android:layout_height="wrap_content"
+         android:layout_gravity="right"
+         android:background="#70D7FF"
+         android:clickable="true"
+         android:ellipsize="end"
+         android:text="@string/joinRoom"
+         android:textColor="#000000" />
   	   
 </LinearLayout>

@@ -1,11 +1,14 @@
 package com.example.matchmaking;
 
 
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,12 +32,12 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 	private WarpClient theClient;
 	private ProgressDialog progressDialog;
     Handler handler = new Handler();
+    int i=0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
 		withoutBtn = (Button)findViewById(R.id.withoutBtn);
 		withBtn = (Button)findViewById(R.id.withBtn);
 		connectToAppwarp = (Button)findViewById(R.id.connect);
@@ -46,6 +49,7 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 		withBtn.setVisibility(View.GONE);
 		spinnerTopic.setVisibility(View.GONE);
 		init();
+		i=0;
 		
 	}
 	
@@ -64,6 +68,8 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 		if(userName.length()>0){
 			Utils.USER_NAME  = userName;
 			progressDialog = ProgressDialog.show(this, "", "Please wait...");
+			progressDialog.setCancelable(true);
+			theClient.addConnectionRequestListener(this);  
 			theClient.connectWithUserName(userName);
 		}else{
 			Utils.showToast(this, "Please enter name");
@@ -86,7 +92,8 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 		WarpClient.initialize(Constants.apiKey, Constants.secretKey);
         try {
             theClient = WarpClient.getInstance();
-            theClient.addConnectionRequestListener(this);  
+            WarpClient.enableTrace(true);
+            
         } catch (Exception ex) {
             Toast.makeText(this, "Exception in Initilization", Toast.LENGTH_LONG).show();
         }
@@ -94,10 +101,12 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 	@Override
 	public void onConnectDone(final ConnectEvent event) {
 		progressDialog.dismiss();
-		handler.post(new Runnable() {
-			@Override
-			public void run() {
-				if(event.getResult() == 0){
+		if(event.getResult() == 0){
+			handler.post(new Runnable() {
+				
+				@Override
+				public void run() {
+					Log.d("OnConnectDone", "Success: "+event.getResult()+new Date());
 					Toast.makeText(MainActivity.this, "connection success", Toast.LENGTH_SHORT).show();
 					nameEditText.setVisibility(View.GONE);
 					withoutBtn.setVisibility(View.VISIBLE);
@@ -105,15 +114,28 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 					spinnerTopic.setVisibility(View.VISIBLE);
 					connectToAppwarp.setVisibility(View.GONE);
 					descText.setVisibility(View.GONE);
-				}else{
-					Toast.makeText(MainActivity.this, "connection failed "+event.getResult(), Toast.LENGTH_SHORT).show();
+					
 				}
-			}
-		});
+			});
+		}else{
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(MainActivity.this, "connection failed "+event.getResult()+" state "+theClient.getConnectionState()+" "+i, Toast.LENGTH_SHORT).show(); 
+					Log.d("OnConnectDone", "Failed: "+event.getResult()+new Date());
+				}
+			}, 5000);
+		}
 		
 	}
 	@Override
 	public void onDisconnectDone(final ConnectEvent event) {
+		
+	}
+
+	@Override
+	public void onInitUDPDone(byte arg0) {
+		
 		
 	}
 	

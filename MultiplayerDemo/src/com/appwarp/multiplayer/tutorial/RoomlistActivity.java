@@ -1,7 +1,6 @@
 package com.appwarp.multiplayer.tutorial;
 
-import java.util.Hashtable;
-
+import java.util.HashMap;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
 import com.shephertz.app42.gaming.multiplayer.client.command.WarpResponseResultCode;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllRoomsEvent;
@@ -45,11 +43,13 @@ public class RoomlistActivity extends Activity implements ZoneRequestListener, R
         	Utils.showToastAlert(this, "Exception in Initilization");
         }
     }
+	
 	public void onStart(){
 		super.onStart();
 		theClient.addZoneRequestListener(this);
-		theClient.getRoomWithNUser(1);// trying to get room with at least one user
+		theClient.getRoomInRange(1, 1);// trying to get room with at least one user
 	}
+	
 	public void onStop(){
 		super.onStop();
 		theClient.removeZoneRequestListener(this);
@@ -79,7 +79,7 @@ public class RoomlistActivity extends Activity implements ZoneRequestListener, R
 	public void onJoinNewRoomClicked(View view){
 		progressDialog = ProgressDialog.show(this,"","Pleaes wait...");
 		progressDialog.setCancelable(true);
-		Hashtable<String, Object> properties = new Hashtable<String, Object>();
+		HashMap<String, Object> properties = new HashMap<String, Object>();
 		properties.put("topLeft", "");
 		properties.put("topRight", "");
 		properties.put("bottomLeft", "");
@@ -164,7 +164,7 @@ public class RoomlistActivity extends Activity implements ZoneRequestListener, R
 		});
 	}
 	private void goToGameScreen(String roomId){
-		Intent intent = new Intent(RoomlistActivity.this, AndEngineTutorialActivity.class);
+		Intent intent = new Intent(RoomlistActivity.this, GameActivity.class);
 		intent.putExtra("roomId", roomId);
 		startActivity(intent);
 	}

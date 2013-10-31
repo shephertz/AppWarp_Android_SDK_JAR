@@ -1,4 +1,4 @@
-package com.example.andengineappwarp.multiplayer;
+package app.appwarp.multiplayer;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -25,11 +25,11 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import app.appwarp.multiplayer.handler.EventHandler;
 
-import com.example.andengineappwarp.multiplayer.handler.ResponseHandler;
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
 
-public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements IOnSceneTouchListener{
+public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouchListener{
 
 	public static int CAMERA_WIDTH = 480;
 	public static int CAMERA_HEIGHT = 800;
@@ -117,7 +117,7 @@ public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements
 
 	private void init(String roomId){
 		if(theClient!=null){
-			ResponseHandler.getInstance().setResultActivity(AndEngineTutorialActivity.this);
+			EventHandler.getInstance().setResultActivity(GameActivity.this);
 			theClient.getLiveRoomInfo(roomId);
 		}
 	}
@@ -149,8 +149,10 @@ public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements
 	private void sendUpdateEvent(float xCord, float yCord){
 		try{
 			JSONObject object = new JSONObject();
-			object.put("X", xCord+"");
-			object.put("Y", yCord+"");
+			float xPer = Utils.getPercentFromValue(xCord, CAMERA_WIDTH);
+			float yPer = Utils.getPercentFromValue(yCord, CAMERA_HEIGHT);
+			object.put("X", xPer);
+			object.put("Y", yPer);
 			theClient.sendChat(object.toString());
 		}catch(Exception e){
 			Log.d("sendUpdateEvent", e.getMessage());
@@ -158,7 +160,6 @@ public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements
 	}
 	
 	public void handleLeave(String name) {
-		
 		if(name.length()>0 && userMap.get(name)!=null){
 			Sprite sprite = userMap.get(name).getSprite();
 			final EngineLock engineLock = this.mEngine.getEngineLock();
@@ -177,27 +178,24 @@ public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements
 			float x = pSceneTouchEvent.getX();
 			float y = pSceneTouchEvent.getY();
 			sendUpdateEvent(x, y);
-			updateMove(Utils.userName, x, y);
+			updateMove(false, Utils.userName, x, y);
 		}
 		return false;
 	}
 	
-	public void updateMove(final String userName, final float x, final float y){
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				if(userMap.get(userName)!=null){
-					Sprite sprite = userMap.get(userName).getSprite();
-					sprite.registerEntityModifier(new MoveModifier(1, sprite.getX(), x, sprite.getY(), y));
-				}
+	public void updateMove(boolean isRemote, String userName, float xCord, float yCord){
+		if(userMap.get(userName)!=null){
+			if(isRemote){
+				xCord = Utils.getValueFromPercent(xCord, CAMERA_WIDTH);
+				yCord = Utils.getValueFromPercent(yCord, CAMERA_HEIGHT);
 			}
-		});
-		
+			Sprite sprite = userMap.get(userName).getSprite();
+			sprite.registerEntityModifier(new MoveModifier(1, sprite.getX(), xCord, sprite.getY(), yCord));
+		}
 	}
 	
 	@Override
 	public void onBackPressed() {
-		
 		if(theClient!=null){
 			theClient.leaveRoom(roomId);
 		}
@@ -209,10 +207,10 @@ public class AndEngineTutorialActivity extends SimpleBaseGameActivity implements
 			theClient.unsubscribeRoom(roomId);
 		}
 		handleLeave(Utils.userName);
-		theClient.removeRoomRequestListener(ResponseHandler.getInstance());
-		theClient.removeNotificationListener(ResponseHandler.getInstance());
-		theClient.removeZoneRequestListener(ResponseHandler.getInstance());
-		ResponseHandler.getInstance().setResultActivity(null);
+		theClient.removeRoomRequestListener(EventHandler.getInstance());
+		theClient.removeNotificationListener(EventHandler.getInstance());
+		theClient.removeZoneRequestListener(EventHandler.getInstance());
+		EventHandler.getInstance().setResultActivity(null);
 		finish();// try to destroy this activity
 	}
 	 

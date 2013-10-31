@@ -1,6 +1,7 @@
 package com.example.matchmaking;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import android.app.Activity;
@@ -218,17 +219,33 @@ public class ChatActivity extends Activity implements RoomRequestListener, Notif
 		});
 		
 	}
+//	@Override
+//	public void onMoveCompleted(MoveEvent arg0) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//	@Override
+//	public void onUserChangeRoomProperty(RoomData arg0, String arg1,Hashtable<String, Object> arg2) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//	@Override
+//	public void onLockPropertiesDone(byte arg0) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//	@Override
+//	public void onUnlockPropertiesDone(byte arg0) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+	
 	@Override
 	public void onMoveCompleted(MoveEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
-	public void onUserChangeRoomProperty(RoomData arg0, String arg1,
-			Hashtable<String, Object> arg2, Hashtable<String, String> arg3) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	@Override
 	public void onLockPropertiesDone(byte arg0) {
 		// TODO Auto-generated method stub
@@ -239,5 +256,33 @@ public class ChatActivity extends Activity implements RoomRequestListener, Notif
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void onUserPaused(String arg0, boolean arg1, String arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onUserResumed(String arg0, boolean arg1, String arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onGameStarted(String arg0, String arg1, String arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onGameStopped(String arg0, String arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onUserChangeRoomProperty(RoomData arg0, String arg1,
+			HashMap<String, Object> arg2, HashMap<String, String> arg3) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 }

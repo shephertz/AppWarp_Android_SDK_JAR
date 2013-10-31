@@ -1,7 +1,9 @@
 package com.example.matchmaking;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.app.Activity;
@@ -32,7 +34,7 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	private TextView resultTextView;
 	private Button chatButton;
 	private WarpClient theClient;
-	Hashtable<String, Object> propertiesToMatch ;
+	HashMap<String, Object> propertiesToMatch ;
 	private String roomIdJoined = "";
 	private String roomNameJoined = "";
 	private Timer timer;
@@ -56,7 +58,7 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 		withoutStatus = getIntent().getBooleanExtra("isWithout", false);
 		String topic = getIntent().getStringExtra("topic").toString();
 		if(propertiesToMatch==null){
-			propertiesToMatch = new Hashtable<String, Object>();
+			propertiesToMatch = new HashMap<String, Object>();
 		}else{
 			propertiesToMatch.clear();
 		}
@@ -113,7 +115,7 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	
 	@Override
 	public void onGetLiveRoomInfoDone(final LiveRoomInfoEvent event) {
-		Hashtable roomProperties = event.getProperties();
+		HashMap roomProperties = event.getProperties();
 		Log.d("roomProperties"+roomProperties, "propertiesToMatch"+propertiesToMatch);
 		boolean status = hasMatchingProperties(roomProperties, propertiesToMatch);
         if(status){
@@ -140,13 +142,12 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
         	}
         }
 	}
-	public boolean hasMatchingProperties(Hashtable totalProperties, Hashtable propertiesToMatch) {
+	public boolean hasMatchingProperties(HashMap<String, Object> totalProperties, HashMap<String, Object> propertiesToMatch) {
         if(propertiesToMatch == null || totalProperties == null ){
             return false;    
         }
-        Enumeration enumKeys = propertiesToMatch.keys();
-        while(enumKeys.hasMoreElements()){
-            String key_join = enumKeys.nextElement().toString();
+        for (Map.Entry<String, Object> entry : propertiesToMatch.entrySet()) { 
+            String key_join = entry.getKey().toString();
             if(totalProperties.get(key_join) == null){
                 return false;
             }
@@ -246,6 +247,16 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	public void update(){
 		timeCounter++;
 	}
+//	@Override
+//	public void onLockPropertiesDone(byte arg0) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//	@Override
+//	public void onUnlockPropertiesDone(byte arg0) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 	@Override
 	public void onLockPropertiesDone(byte arg0) {
 		// TODO Auto-generated method stub

@@ -1,10 +1,10 @@
-package com.example.andengineappwarp.multiplayer.handler;
+package app.appwarp.multiplayer.handler;
 
 import android.app.Activity;
 import android.util.Log;
+import app.appwarp.multiplayer.MainActivity;
+import app.appwarp.multiplayer.Utils;
 
-import com.example.andengineappwarp.multiplayer.MainActivity;
-import com.example.andengineappwarp.multiplayer.Utils;
 import com.shephertz.app42.gaming.multiplayer.client.events.ConnectEvent;
 import com.shephertz.app42.gaming.multiplayer.client.listener.ConnectionRequestListener;
 
@@ -51,6 +51,12 @@ public class ConnectionHandler implements ConnectionRequestListener{
 	@Override
 	public void onDisconnectDone(ConnectEvent event) {
 		Log.d("onDisconnectDone", event.getResult()+"");
+		
+	}
+
+	@Override
+	public void onInitUDPDone(byte arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 	

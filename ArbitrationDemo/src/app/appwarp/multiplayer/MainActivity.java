@@ -1,20 +1,15 @@
-package com.example.andengineappwarp.multiplayer;
+package app.appwarp.multiplayer;
 
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import com.example.andengineappwarp.multiplayer.handler.ConnectionHandler;
+import app.appwarp.multiplayer.handler.ConnectionHandler;
+
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
-import com.shephertz.app42.gaming.multiplayer.client.events.ConnectEvent;
-import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
-import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
-import com.shephertz.app42.gaming.multiplayer.client.listener.ConnectionRequestListener;
-import com.shephertz.app42.gaming.multiplayer.client.listener.RoomRequestListener;
 
 public class MainActivity extends Activity {
 
