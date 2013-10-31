@@ -1,5 +1,6 @@
 package com.turnbased.appwarp.longestline;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import android.util.Log;
@@ -71,13 +72,6 @@ public class GameMessenger implements NotifyListener, TurnBasedRoomListener, Con
     }
 
     @Override
-    public void onUserChangeRoomProperty(RoomData arg0, String arg1,
-            Hashtable<String, Object> arg2, Hashtable<String, String> arg3) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void onUserJoinedLobby(LobbyData arg0, String arg1) {
         // TODO Auto-generated method stub
         
@@ -123,7 +117,7 @@ public class GameMessenger implements NotifyListener, TurnBasedRoomListener, Con
     public void start() {
         Utilities.getWarpClient().addTurnBasedRoomListener(this);
         Utilities.getWarpClient().addNotificationListener(this);
-        Utilities.getWarpClient().addConnectionRequestListener(this);
+        Utilities.getWarpClient().addConnectionRequestListener(this);        
     }
 
     public void stop() {
@@ -135,5 +129,47 @@ public class GameMessenger implements NotifyListener, TurnBasedRoomListener, Con
 
     public void sendMove(String boardState) {
         Utilities.getWarpClient().sendMove(boardState);        
+    }
+
+    @Override
+    public void onInitUDPDone(byte arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onGetMoveHistoryDone(byte arg0, MoveEvent[] arg1) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onStartGameDone(byte res) {        
+        Log.d("AppWarpTrace", "onStartGameDone "+res);        
+    }
+
+    @Override
+    public void onStopGameDone(byte arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onGameStarted(String started, String id, String nextTurn) {
+        Log.d("AppWarpTrace", "onGameStarted nextTurn "+nextTurn); 
+        observer.onGameStarted(nextTurn);        
+    }
+
+    @Override
+    public void onGameStopped(String arg0, String arg1) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onUserChangeRoomProperty(RoomData arg0, String arg1,
+            HashMap<String, Object> arg2, HashMap<String, String> arg3) {
+        // TODO Auto-generated method stub
+        
     }    
 }
