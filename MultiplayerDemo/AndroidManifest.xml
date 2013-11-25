@@ -24,7 +24,7 @@
             android:name=".RoomlistActivity" >
         </activity>
         <activity
-           android:name=".AndEngineTutorialActivity" >
+           android:name=".GameActivity" >
         </activity>
     </application>
 
