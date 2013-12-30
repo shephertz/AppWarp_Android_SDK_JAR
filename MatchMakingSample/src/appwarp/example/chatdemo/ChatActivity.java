@@ -1,8 +1,7 @@
-package com.example.matchmaking;
+package appwarp.example.chatdemo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -61,6 +60,7 @@ public class ChatActivity extends Activity implements RoomRequestListener, Notif
 		theClient.getLiveRoomInfo(roomId);
 		progressDialog = ProgressDialog.show(this, "", "Please wait..");
 	}
+	
 	public void onDestroy(){
 		super.onDestroy();
 		if(theClient!=null){
@@ -69,10 +69,13 @@ public class ChatActivity extends Activity implements RoomRequestListener, Notif
 			theClient.removeNotificationListener(this);
 		}
 	}
+	
 	public void onSendClicked(View view){
 		outputScrollView.fullScroll(ScrollView.FOCUS_DOWN);
 		theClient.sendChat(inputEditText.getText().toString());
+		inputEditText.setText("");
 	}
+	
 	@Override
 	public void onGetLiveRoomInfoDone(final LiveRoomInfoEvent event) {
 		progressDialog.dismiss();
@@ -107,6 +110,7 @@ public class ChatActivity extends Activity implements RoomRequestListener, Notif
 			
 		}
 	}
+	
 	private void fillDataInSpinner(String name){
 		if(name!=null && name.length()>0){
 			onlineUsers.setPrompt(name);// room name
@@ -120,6 +124,7 @@ public class ChatActivity extends Activity implements RoomRequestListener, Notif
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    onlineUsers.setAdapter(adapter);
 	}
+	
 	@Override
 	public void onJoinRoomDone(RoomEvent arg0) {
 		// TODO Auto-generated method stub
@@ -219,26 +224,6 @@ public class ChatActivity extends Activity implements RoomRequestListener, Notif
 		});
 		
 	}
-//	@Override
-//	public void onMoveCompleted(MoveEvent arg0) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//	@Override
-//	public void onUserChangeRoomProperty(RoomData arg0, String arg1,Hashtable<String, Object> arg2) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//	@Override
-//	public void onLockPropertiesDone(byte arg0) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//	@Override
-//	public void onUnlockPropertiesDone(byte arg0) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 	
 	@Override
 	public void onMoveCompleted(MoveEvent arg0) {

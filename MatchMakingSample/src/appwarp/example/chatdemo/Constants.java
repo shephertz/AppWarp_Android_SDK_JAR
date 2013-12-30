@@ -1,4 +1,4 @@
-package com.example.matchmaking;
+package appwarp.example.chatdemo;
 
 public class Constants {
 

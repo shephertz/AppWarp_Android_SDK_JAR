@@ -1,11 +1,9 @@
-package com.example.matchmaking;
+package appwarp.example.chatdemo;
 
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
+import com.shephertz.app42.gaming.multiplayer.client.command.WarpResponseResultCode;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllRoomsEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllUsersEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
@@ -36,12 +35,10 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	private WarpClient theClient;
 	HashMap<String, Object> propertiesToMatch ;
 	private String roomIdJoined = "";
-	private String roomNameJoined = "";
-	private Timer timer;
 	private long timeCounter = 0;
 	private long startTime = 0;
 	private boolean withoutStatus = false;
-	private boolean isOnJoinRoom = false;
+//	private boolean isOnJoinRoom = false;
 	private String[] roomIds;
 	private int roomIdCounter=0;
 	
@@ -65,13 +62,12 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 		propertiesToMatch.put("topic", topic);
 		timeCounter = 0;
 		roomIdCounter = 0;
-		isOnJoinRoom  = false;
 		roomIds = null;
 		startTime = System.currentTimeMillis();
 		load(withoutStatus);
 		roomIdJoined = "";
-		roomNameJoined = "";
 	}
+	
 	public void onStart(){
 		super.onStart();
 		theClient.addZoneRequestListener(this);
@@ -81,15 +77,18 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		if(roomIdJoined!=null && roomIdJoined.length()>0 && isOnJoinRoom){
+		if(roomIdJoined.length()>0){
 			theClient.leaveRoom(roomIdJoined);
+			theClient.disconnect();
 		}
 	}
+	
 	public void onStop(){
 		super.onStop();
 		theClient.removeZoneRequestListener(this);
 		theClient.removeRoomRequestListener(this);
 	}
+	
 	public void onChatClicked(View view){
 		Intent intent = new Intent(this, ChatActivity.class);
 		intent.putExtra("roomId", roomIdJoined);
@@ -142,6 +141,7 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
         	}
         }
 	}
+	
 	public boolean hasMatchingProperties(HashMap<String, Object> totalProperties, HashMap<String, Object> propertiesToMatch) {
         if(propertiesToMatch == null || totalProperties == null ){
             return false;    
@@ -163,20 +163,18 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	@Override
 	public void onJoinRoomDone(final RoomEvent event) {
 		timeCounter = System.currentTimeMillis()-startTime;
-		isOnJoinRoom = true;
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				if(withoutStatus){
 					cb3.setChecked(true);
 				}
-				if(event.getResult()==0){// success case
+				if(event.getResult()==WarpResponseResultCode.SUCCESS){
 					chatButton.setEnabled(true);
 					roomIdJoined = event.getData().getId();
-					roomNameJoined = event.getData().getName();
-					resultTextView.setText("\nTime Taken: "+timeCounter +"\nResult code: "+event.getResult()+" Success \nRoomID: "+roomIdJoined );
+					resultTextView.setText("\nTime Taken: "+timeCounter+"(ms)\nResult code: "+event.getResult()+" Success \nRoomID: "+roomIdJoined );
 				}else{
-					resultTextView.setText("\nRoom join failed \nTime Taken: "+timeCounter +"\nResult code: "+event.getResult());
+					resultTextView.setText("\nRoom join failed \nTime Taken: "+timeCounter+"(ms)\nResult code: "+event.getResult());
 				}
 			}
 		});
@@ -247,24 +245,12 @@ public class ResultActivity extends Activity implements ZoneRequestListener, Roo
 	public void update(){
 		timeCounter++;
 	}
-//	@Override
-//	public void onLockPropertiesDone(byte arg0) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//	@Override
-//	public void onUnlockPropertiesDone(byte arg0) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 	@Override
 	public void onLockPropertiesDone(byte arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void onUnlockPropertiesDone(byte arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 }

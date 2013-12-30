@@ -1,13 +1,10 @@
-package com.example.matchmaking;
+package appwarp.example.chatdemo;
 
-
-import java.util.Date;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
+import com.shephertz.app42.gaming.multiplayer.client.command.WarpResponseResultCode;
 import com.shephertz.app42.gaming.multiplayer.client.events.ConnectEvent;
 import com.shephertz.app42.gaming.multiplayer.client.listener.ConnectionRequestListener;
 
@@ -31,9 +29,7 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 	private Spinner spinnerTopic;
 	private WarpClient theClient;
 	private ProgressDialog progressDialog;
-    Handler handler = new Handler();
-    int i=0;
-	
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,22 +40,10 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 		descText = (TextView)findViewById(R.id.descText);
 		spinnerTopic = (Spinner)findViewById(R.id.spinnerLevel);
 		nameEditText = (EditText)findViewById(R.id.editTextName);
-		
 		withoutBtn.setVisibility(View.GONE);
 		withBtn.setVisibility(View.GONE);
 		spinnerTopic.setVisibility(View.GONE);
 		init();
-		i=0;
-		
-	}
-	
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		if(theClient!=null){
-			theClient.removeConnectionRequestListener(this);
-			theClient.disconnect();
-		}
 	}
 	
 	public void onConnectClicked(View view){
@@ -81,55 +65,67 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 		intent.putExtra("isWithout", true);
 		intent.putExtra("topic", spinnerTopic.getSelectedItem().toString());
 		startActivity(intent);
+		showMainView();
 	}
+	
 	public void onWithClicked(View view){
 		Intent intent = new Intent(this, ResultActivity.class);
 		intent.putExtra("isWithout", false);
 		intent.putExtra("topic", spinnerTopic.getSelectedItem().toString());
 		startActivity(intent);
+		showMainView();
 	}
+	
+	private void showMatchMakingOption(){
+		descText.setVisibility(View.GONE);
+		nameEditText.setVisibility(View.GONE);
+		connectToAppwarp.setVisibility(View.GONE);
+		withoutBtn.setVisibility(View.VISIBLE);
+		withBtn.setVisibility(View.VISIBLE);
+		spinnerTopic.setVisibility(View.VISIBLE);
+	}
+	
+	private void showMainView(){
+		descText.setVisibility(View.VISIBLE);
+		nameEditText.setVisibility(View.VISIBLE);
+		connectToAppwarp.setVisibility(View.VISIBLE);
+		withoutBtn.setVisibility(View.GONE);
+		withBtn.setVisibility(View.GONE);
+		spinnerTopic.setVisibility(View.GONE);
+	}
+	
 	private void init(){
 		WarpClient.initialize(Constants.apiKey, Constants.secretKey);
         try {
             theClient = WarpClient.getInstance();
             WarpClient.enableTrace(true);
-            
         } catch (Exception ex) {
             Toast.makeText(this, "Exception in Initilization", Toast.LENGTH_LONG).show();
         }
+        theClient.addConnectionRequestListener(this);
 	}
 	@Override
 	public void onConnectDone(final ConnectEvent event) {
-		progressDialog.dismiss();
-		if(event.getResult() == 0){
-			handler.post(new Runnable() {
-				
-				@Override
-				public void run() {
-					Log.d("OnConnectDone", "Success: "+event.getResult()+new Date());
-					Toast.makeText(MainActivity.this, "connection success", Toast.LENGTH_SHORT).show();
-					nameEditText.setVisibility(View.GONE);
-					withoutBtn.setVisibility(View.VISIBLE);
-					withBtn.setVisibility(View.VISIBLE);
-					spinnerTopic.setVisibility(View.VISIBLE);
-					connectToAppwarp.setVisibility(View.GONE);
-					descText.setVisibility(View.GONE);
-					
+		Log.d("OnConnectDone", ""+event.getResult());
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if(progressDialog!=null){
+					progressDialog.dismiss();
+					progressDialog=null;
 				}
-			});
-		}else{
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					Toast.makeText(MainActivity.this, "connection failed "+event.getResult()+" state "+theClient.getConnectionState()+" "+i, Toast.LENGTH_SHORT).show(); 
-					Log.d("OnConnectDone", "Failed: "+event.getResult()+new Date());
+				if(event.getResult()==WarpResponseResultCode.SUCCESS){
+					Toast.makeText(MainActivity.this, "Connection Success", Toast.LENGTH_SHORT).show();
+					showMatchMakingOption();
+				}else{
+					Toast.makeText(MainActivity.this, "Connection Failed"+event.getResult(), Toast.LENGTH_SHORT).show(); 
 				}
-			}, 5000);
-		}
-		
+			}
+		});
 	}
+	
 	@Override
-	public void onDisconnectDone(final ConnectEvent event) {
+	public void onDisconnectDone(ConnectEvent event) {
 		
 	}
 
@@ -138,5 +134,14 @@ public class MainActivity extends Activity implements ConnectionRequestListener{
 		
 		
 	}
+	
+	@Override
+	public void onBackPressed(){
+		super.onBackPressed();
+		if(theClient!=null){
+			theClient.removeConnectionRequestListener(this);
+		}
+	}
+	
 	
 }

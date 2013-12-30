@@ -1,4 +1,4 @@
-package com.appwarp.multiplayer.tutorial;
+package appwarp.example.multiplayerdemo;
 
 import org.andengine.entity.sprite.Sprite;
 

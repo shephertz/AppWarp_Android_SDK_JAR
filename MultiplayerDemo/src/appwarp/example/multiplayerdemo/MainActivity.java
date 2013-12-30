@@ -1,4 +1,4 @@
-package com.appwarp.multiplayer.tutorial;
+package appwarp.example.multiplayerdemo;
 
 
 import android.app.Activity;
@@ -34,9 +34,11 @@ public class MainActivity extends Activity implements ConnectionRequestListener 
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+		theClient.removeConnectionRequestListener(this);
 		if(theClient!=null && isConnected){
 			theClient.disconnect();
 		}
+		
 	}
 	
 	public void onMonsterClicked(View view){
@@ -62,10 +64,9 @@ public class MainActivity extends Activity implements ConnectionRequestListener 
 			return;
 		}
 		if(selectedMonster!=-1){
-			theClient.addConnectionRequestListener(this); 
 			String userName = nameEditText.getText()+"_@"+selectedMonster;
 			Utils.userName = userName;
-			Log.d("Name to Join ", ""+userName);
+			Log.d("Name to Join", ""+userName);
 			theClient.connectWithUserName(userName);
 			progressDialog =  ProgressDialog.show(this, "", "connecting to appwarp");
 		}else{
@@ -80,6 +81,7 @@ public class MainActivity extends Activity implements ConnectionRequestListener 
         } catch (Exception ex) {
         	Utils.showToastAlert(this, "Exception in Initilization");
         }
+        theClient.addConnectionRequestListener(this); 
     }
 	
 	@Override
@@ -90,14 +92,16 @@ public class MainActivity extends Activity implements ConnectionRequestListener 
 			public void run() {
 				if(progressDialog!=null){
 					progressDialog.dismiss();
+					progressDialog=null;
 				}
 			}
 		});
 		if(event.getResult() == WarpResponseResultCode.SUCCESS){// go to room  list 
 			isConnected = true;
-			Intent intent = new Intent(MainActivity.this, RoomlistActivity.class);
+			Intent intent = new Intent(MainActivity.this, RoomListActivity.class);
 			startActivity(intent);
 		}else{
+			isConnected = false;
 			Utils.showToastOnUIThread(MainActivity.this, "connection failed");
 		}
 	}
@@ -105,6 +109,7 @@ public class MainActivity extends Activity implements ConnectionRequestListener 
 	@Override
 	public void onDisconnectDone(final ConnectEvent event) {
 		Log.d("onDisconnectDone", event.getResult()+"");
+		isConnected = false;
 	}
 
     @Override

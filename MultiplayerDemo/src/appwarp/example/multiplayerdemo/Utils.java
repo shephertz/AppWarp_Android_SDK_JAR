@@ -1,4 +1,4 @@
-package com.appwarp.multiplayer.tutorial;
+package appwarp.example.multiplayerdemo;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

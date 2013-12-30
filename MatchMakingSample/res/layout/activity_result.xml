@@ -8,12 +8,13 @@
 
     <LinearLayout
         android:id="@+id/beforeView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="left"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center" >
 
@@ -24,7 +25,7 @@
               />
 
             <Button
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:background="@null"
@@ -33,8 +34,8 @@
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center" >
 
             <CheckBox
@@ -44,7 +45,7 @@
               />
 
             <Button
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:background="@null"
@@ -53,8 +54,8 @@
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center" >
 
             <CheckBox
@@ -64,7 +65,7 @@
               />
 
             <Button
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:background="@null"
@@ -84,7 +85,8 @@
 
     <Button
         android:id="@+id/chatBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
+        android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
         android:onClick="onChatClicked"
         android:text="@string/chat" />

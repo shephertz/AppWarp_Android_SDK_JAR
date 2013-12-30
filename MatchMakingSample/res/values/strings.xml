@@ -4,13 +4,14 @@
     <string name="app_name">MatchMaking And Chat Demo</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="Description">
-        This App describe matchmaking benefit in terms of api call and time taken.\n 
-        user have created some tooms via apphq console and categorized room for different 
-        topics by adding properties e.g. \ntopic=sports\n
-        the user want to join some room with specific property.
+    <string name="Description">This is AppWarp Realtime Chat Demo. 
+        This app describe AppWarp matchmaking benefit 
+        in terms of api call and time taken. 
+        User have created some rooms via apphq console and categorized room for different topics by adding properties.
+        \ne.g. topic=sports
+        \nUser has to select any room to start chat.
     </string>
-	<string name="connectToAppwarp">Connect to Appwarp</string>
+	<string name="connectToAppwarp">Connect to AppWarp</string>
 	<string name="without_matchmaking">Without Matchmaking</string>
 	<string name="with_matchmaking">With Matchmaking</string>
 	<string name="get_all">Get All Rooms</string>

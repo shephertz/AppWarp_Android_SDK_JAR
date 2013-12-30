@@ -1,7 +1,7 @@
-package com.appwarp.multiplayer.tutorial;
+package appwarp.example.multiplayerdemo;
 
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.Map;
 import java.util.Random;
 
 import org.andengine.engine.Engine.EngineLock;
@@ -9,13 +9,11 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
-import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.RepeatingSpriteBackground;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -29,8 +27,18 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
+import com.shephertz.app42.gaming.multiplayer.client.command.WarpResponseResultCode;
+import com.shephertz.app42.gaming.multiplayer.client.events.ChatEvent;
+import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
+import com.shephertz.app42.gaming.multiplayer.client.events.LobbyData;
+import com.shephertz.app42.gaming.multiplayer.client.events.MoveEvent;
+import com.shephertz.app42.gaming.multiplayer.client.events.RoomData;
+import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
+import com.shephertz.app42.gaming.multiplayer.client.events.UpdateEvent;
+import com.shephertz.app42.gaming.multiplayer.client.listener.NotifyListener;
+import com.shephertz.app42.gaming.multiplayer.client.listener.RoomRequestListener;
 
-public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouchListener{
+public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouchListener, RoomRequestListener, NotifyListener {
 
 	public static int CAMERA_WIDTH = 480;
 	public static int CAMERA_HEIGHT = 800;
@@ -65,7 +73,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	private RepeatingSpriteBackground mGrassBackground;
 	
 	private WarpClient theClient;
-	private EventHandler eventHandler = new EventHandler(this);
+	
 	private Random ramdom = new Random();
 
 	private HashMap<String, User> userMap = new HashMap<String, User>();
@@ -140,9 +148,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
 	@Override
 	protected Scene onCreateScene() {
-//		this.mEngine.registerUpdateHandler(new FPSLogger()); // logs the frame rate
-
-		/* Create Scene and set background colour to (1, 1, 1) = white */
 		this.mMainScene = new Scene();
 		this.mMainScene.setBackground(mGrassBackground);
 
@@ -213,11 +218,9 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 	
 	private void init(String roomId){
 		if(theClient!=null){
-			theClient.addRoomRequestListener(eventHandler);
-			theClient.addNotificationListener(eventHandler);
-			Log.d(this.getClass().toString(), "Room Id is: "+roomId);
-			theClient.subscribeRoom(roomId);
-			theClient.getLiveRoomInfo(roomId);
+			theClient.addRoomRequestListener(this);
+			theClient.addNotificationListener(this);
+			theClient.joinRoom(roomId);
 		}
 	}
 	public void addMorePlayer(boolean isMine, String userName){
@@ -350,7 +353,11 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		}
 		objectMap.put(destination, sprite);
 		this.mMainScene.attachChild(sprite);
-		sprite.registerEntityModifier(new MoveModifier(1, sprite.getX(), xDest, sprite.getY(), yDest));
+		float deltaX = sprite.getX() - xDest;
+		float deltaY = sprite.getY() - yDest;
+		float distance = (float) Math.sqrt((deltaX*deltaX)+(deltaY*deltaY));
+		float time = distance/Constants.MonsterSpeed;
+		sprite.registerEntityModifier(new MoveModifier(time, sprite.getX(), xDest, sprite.getY(), yDest));
 		if(updateProperty){
 			updateProperty(destination, selectedObject+"");
 		}
@@ -386,12 +393,13 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 			handleLeave(Utils.userName);
 			theClient.leaveRoom(roomId);
 			theClient.unsubscribeRoom(roomId);
-			theClient.removeRoomRequestListener(eventHandler);
-			theClient.removeNotificationListener(eventHandler);
+			theClient.removeRoomRequestListener(this);
+			theClient.removeNotificationListener(this);
+			clearResources();
 		}
 		super.onBackPressed();
 	}
-	public void clearResources(){
+	private void clearResources(){
 		this.mBitmapTextureAtlas1.unload();
 		this.mBitmapTextureAtlas2.unload();
 		this.mBitmapTextureAtlas3.unload();
@@ -402,4 +410,191 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		this.fruitBitmapTextureAtlas4.unload();
 		this.mMainScene.dispose();
 	}
+	
+
+
+	private HashMap<String, Object> properties;
+	
+	
+	@Override
+	public void onChatReceived(ChatEvent event) {
+		String sender = event.getSender();
+		if(sender.equals(Utils.userName)==false){// if not same user
+			String message = event.getMessage();
+			try{
+				JSONObject object = new JSONObject(message);
+				float xCord = Float.parseFloat(object.get("X")+"");
+				float yCord = Float.parseFloat(object.get("Y")+"");
+				updateMove(true, sender, xCord, yCord);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	@Override
+	public void onPrivateChatReceived(String arg0, String arg1) {
+		
+	}
+
+	@Override
+	public void onRoomCreated(RoomData arg0) {
+		
+	}
+
+	@Override
+	public void onRoomDestroyed(RoomData arg0) {
+		
+	}
+
+	@Override
+	public void onUpdatePeersReceived(UpdateEvent arg0) {
+		
+	}
+
+	@Override
+	public void onUserChangeRoomProperty(RoomData roomData, String userName, HashMap<String, Object> tableProperties, HashMap<String, String> lockProperties) {
+		if(userName.equals(Utils.userName)){
+			// just update the local property table.
+			// no need to update UI as we have already done so.
+			properties = tableProperties;
+			return;
+		}
+		
+		// notification is from a remote user. We need to update UI accordingly.
+		
+		for (Map.Entry<String, Object> entry : tableProperties.entrySet()) { 
+            if(entry.getValue().toString().length()>0){
+				if(!this.properties.get(entry.getKey()).toString().equals(entry.getValue())){
+					int fruitId = Integer.parseInt(entry.getValue().toString());
+					placeObject(fruitId, entry.getKey(), userName, false);
+					properties.put(entry.getKey(), entry.getValue());
+				}
+			}
+        }
+	}
+
+	@Override
+	public void onUserJoinedLobby(LobbyData arg0, String arg1) {
+		
+		
+	}
+
+	@Override
+	public void onUserJoinedRoom(RoomData roomData, String name) {
+		addMorePlayer(true, name);
+	}
+
+	@Override
+	public void onUserLeftLobby(LobbyData arg0, String arg1) {
+		
+		
+	}
+
+	@Override
+	public void onUserLeftRoom(RoomData roomData, String name) {
+		handleLeave(name);
+	}
+
+	@Override
+	public void onGetLiveRoomInfoDone(LiveRoomInfoEvent event) {
+		if(event.getResult()==WarpResponseResultCode.SUCCESS){
+			String[] joinedUser = event.getJoinedUsers();
+			if(joinedUser!=null){
+				for(int i=0;i<joinedUser.length;i++){
+					if(joinedUser[i].equals(Utils.userName)){
+						addMorePlayer(true, joinedUser[i]);
+					}else{
+						addMorePlayer(false, joinedUser[i]);
+					}
+				}
+			}
+			properties = event.getProperties();
+			for (Map.Entry<String, Object> entry : properties.entrySet()) { 
+	            if(entry.getValue().toString().length()>0){
+					int fruitId = Integer.parseInt(entry.getValue().toString());
+					placeObject(fruitId, entry.getKey(), null, false);
+				}
+	        }
+		}else{
+			Utils.showToastOnUIThread(this, "onGetLiveRoomInfoDone: Failed "+event.getResult());
+		}
+		
+	}
+
+	@Override
+	public void onJoinRoomDone(RoomEvent event) {
+		if(event.getResult()==WarpResponseResultCode.SUCCESS){
+			theClient.subscribeRoom(roomId);
+		}else{
+			Utils.showToastOnUIThread(this, "onJoinRoomDone: Failed "+event.getResult());
+		}
+	}
+
+	@Override
+	public void onLeaveRoomDone(RoomEvent event) {
+		
+	}
+
+	@Override
+	public void onSetCustomRoomDataDone(LiveRoomInfoEvent arg0) {
+		
+	}
+
+	@Override
+	public void onSubscribeRoomDone(RoomEvent event) {
+		if(event.getResult()==WarpResponseResultCode.SUCCESS){
+			theClient.getLiveRoomInfo(roomId);
+		}else{
+			Utils.showToastOnUIThread(this, "onSubscribeRoomDone: Failed "+event.getResult());
+		}
+	}
+
+	@Override
+	public void onUnSubscribeRoomDone(RoomEvent arg0) {
+		
+	}
+
+	@Override
+	public void onUpdatePropertyDone(LiveRoomInfoEvent arg0) {
+		
+	}
+
+	@Override
+	public void onMoveCompleted(MoveEvent arg0) {
+		
+	}
+
+	@Override
+	public void onLockPropertiesDone(byte arg0) {
+		
+	}
+
+	@Override
+	public void onUnlockPropertiesDone(byte arg0) {
+		
+	}
+
+	@Override
+	public void onGameStarted(String arg0, String arg1, String arg2) {
+			
+	}
+
+	@Override
+	public void onGameStopped(String arg0, String arg1) {
+		
+	}
+
+	@Override
+	public void onUserPaused(String arg0, boolean arg1, String arg2) {
+		
+	}
+
+	@Override
+	public void onUserResumed(String arg0, boolean arg1, String arg2) {
+		
+	}
+
+
 }

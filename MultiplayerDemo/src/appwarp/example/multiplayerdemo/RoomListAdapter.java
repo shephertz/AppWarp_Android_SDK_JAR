@@ -1,4 +1,4 @@
-package com.appwarp.multiplayer.tutorial;
+package appwarp.example.multiplayerdemo;
 
 import java.util.ArrayList;
 
@@ -12,16 +12,16 @@ import android.widget.TextView;
 
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomData;
 
-public class RoomlistAdapter extends BaseAdapter {
+public class RoomListAdapter extends BaseAdapter {
 
 	
 	private ArrayList<String> roomIdList = new ArrayList<String>();
 	private Context context;
-	private RoomlistActivity roomlistActivity;
+	private RoomListActivity roomlistActivity;
 	
-	RoomlistAdapter(Context c){
+	RoomListAdapter(Context c){
 		this.context = c;
-		roomlistActivity = (RoomlistActivity)context;
+		roomlistActivity = (RoomListActivity)context;
 	}
 	
 	@Override

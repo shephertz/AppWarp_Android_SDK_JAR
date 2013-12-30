@@ -1,6 +1,8 @@
-package com.appwarp.multiplayer.tutorial;
+package appwarp.example.multiplayerdemo;
 
 import java.util.HashMap;
+import java.util.Hashtable;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -8,32 +10,31 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
 import com.shephertz.app42.gaming.multiplayer.client.command.WarpResponseResultCode;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllRoomsEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllUsersEvent;
-import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LiveUserInfoEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.MatchedRoomsEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomData;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
-import com.shephertz.app42.gaming.multiplayer.client.listener.RoomRequestListener;
 import com.shephertz.app42.gaming.multiplayer.client.listener.ZoneRequestListener;
 
 
-public class RoomlistActivity extends Activity implements ZoneRequestListener, RoomRequestListener{
+public class RoomListActivity extends Activity implements ZoneRequestListener {
 	
 	private WarpClient theClient;
-	private RoomlistAdapter roomlistAdapter;
+	private RoomListAdapter roomlistAdapter;
 	private ListView listView;
-	private ProgressDialog progressDialog;
+	private ProgressDialog progressDialog = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.room_list);
 		listView = (ListView)findViewById(R.id.roomList);
-		roomlistAdapter = new RoomlistAdapter(this);
+		roomlistAdapter = new RoomListAdapter(this);
 		init();
 	}
 	private void init(){
@@ -53,7 +54,6 @@ public class RoomlistActivity extends Activity implements ZoneRequestListener, R
 	public void onStop(){
 		super.onStop();
 		theClient.removeZoneRequestListener(this);
-		theClient.removeRoomRequestListener(this);
 	}
 	
 	@Override
@@ -64,13 +64,7 @@ public class RoomlistActivity extends Activity implements ZoneRequestListener, R
 	
 	public void joinRoom(String roomId){
 		if(roomId!=null && roomId.length()>0){
-			theClient.joinRoom(roomId);
-			theClient.addRoomRequestListener(this);
-			if(progressDialog!=null){
-				progressDialog.setMessage("joining room...");
-			}else{
-				progressDialog = ProgressDialog.show(this, "", "joining room...");
-			}
+			goToGameScreen(roomId);
 		}else{
 			Log.d("joinRoom", "failed:"+roomId);
 		}
@@ -92,13 +86,16 @@ public class RoomlistActivity extends Activity implements ZoneRequestListener, R
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				if(progressDialog!=null){
+					progressDialog.dismiss();
+					progressDialog = null;
+				}
 				if(event.getResult()==WarpResponseResultCode.SUCCESS){// if room created successfully
 					String roomId = event.getData().getId();
-					Log.d("roomId", event.getResult()+"onCreateRoomDone"+roomId);
 					joinRoom(roomId);
+					Log.d("onCreateRoomDone", event.getResult()+" "+roomId);
 				}else{
-					progressDialog.dismiss();
-					Utils.showToastAlert(RoomlistActivity.this, "Room creation failed...");
+					Utils.showToastAlert(RoomListActivity.this, "Room creation failed...");
 				}
 			}
 		});
@@ -108,22 +105,24 @@ public class RoomlistActivity extends Activity implements ZoneRequestListener, R
 	public void onDeleteRoomDone(RoomEvent event) {
 		
 	}
+	
 	@Override
 	public void onGetAllRoomsDone(AllRoomsEvent event) {
 		
 	}
+	
 	@Override
 	public void onGetLiveUserInfoDone(LiveUserInfoEvent event) {
-		// TODO Auto-generated method stub
 		
 	}
+	
 	@Override
 	public void onGetMatchedRoomsDone(final MatchedRoomsEvent event) {
-		runOnUiThread(new Runnable() {
+		runOnUiThread(new Runnable(){
 			@Override
 			public void run() {
 				RoomData[] roomDataList = event.getRoomsData();
-				if(roomDataList.length>0){
+				if(roomDataList!=null && roomDataList.length>0){
 					roomlistAdapter.setData(roomDataList);
 					listView.setAdapter(roomlistAdapter);
 				}else{
@@ -131,78 +130,22 @@ public class RoomlistActivity extends Activity implements ZoneRequestListener, R
 				}
 			}
 		});
-		
-	}
-	@Override
-	public void onGetOnlineUsersDone(AllUsersEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onSetCustomUserDataDone(LiveUserInfoEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onGetLiveRoomInfoDone(LiveRoomInfoEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onJoinRoomDone(final RoomEvent event) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				progressDialog.dismiss();
-				Log.d("onJoinRoomDone", ""+event.getResult());
-				if(event.getResult()==0){// Room created successfully
-					goToGameScreen(event.getData().getId());
-				}else{
-					Utils.showToastAlert(RoomlistActivity.this, "Room joining failed");
-				}
-			}
-		});
-	}
-	private void goToGameScreen(String roomId){
-		Intent intent = new Intent(RoomlistActivity.this, GameActivity.class);
-		intent.putExtra("roomId", roomId);
-		startActivity(intent);
 	}
 	
 	@Override
-	public void onLeaveRoomDone(RoomEvent arg0) {
-		// TODO Auto-generated method stub
+	public void onGetOnlineUsersDone(AllUsersEvent arg0) {
 		
 	}
+	
 	@Override
-	public void onSetCustomRoomDataDone(LiveRoomInfoEvent arg0) {
-		// TODO Auto-generated method stub
+	public void onSetCustomUserDataDone(LiveUserInfoEvent arg0) {
 		
 	}
-	@Override
-	public void onSubscribeRoomDone(RoomEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onUnSubscribeRoomDone(RoomEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onUpdatePropertyDone(LiveRoomInfoEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onLockPropertiesDone(byte arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onUnlockPropertiesDone(byte arg0) {
-		// TODO Auto-generated method stub
-		
+	
+	private void goToGameScreen(String roomId){
+		Intent intent = new Intent(this, GameActivity.class);
+		intent.putExtra("roomId", roomId);
+		startActivity(intent);
 	}
 	
 }

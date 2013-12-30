@@ -21,7 +21,6 @@
             android:layout_margin="10dp"
             android:gravity="center"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
             android:text="@string/Description" />
 
         <EditText
