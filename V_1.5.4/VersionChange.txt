@@ -1,0 +1,1 @@
+* Getter, Setter Method Added to WarpClient
