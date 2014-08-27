@@ -1,0 +1,3 @@
+* reasonCode Added in Connect Event
+* RecoverConnectionWithSessionID API added
+* getSessionID API added
