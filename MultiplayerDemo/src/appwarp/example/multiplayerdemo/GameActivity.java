@@ -596,5 +596,17 @@ public class GameActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 		
 	}
 
+	@Override
+	public void onNextTurnRequest(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPrivateUpdateReceived(String arg0, byte[] arg1, boolean arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

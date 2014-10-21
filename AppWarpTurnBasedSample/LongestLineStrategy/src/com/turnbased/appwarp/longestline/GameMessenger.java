@@ -171,5 +171,23 @@ public class GameMessenger implements NotifyListener, TurnBasedRoomListener, Con
             HashMap<String, Object> arg2, HashMap<String, String> arg3) {
         // TODO Auto-generated method stub
         
-    }    
+    }
+
+	@Override
+	public void onSetNextTurnDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onNextTurnRequest(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPrivateUpdateReceived(String arg0, byte[] arg1, boolean arg2) {
+		// TODO Auto-generated method stub
+		
+	}    
 }

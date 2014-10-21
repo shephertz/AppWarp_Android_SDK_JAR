@@ -1,5 +1,7 @@
 package com.App42.TicTacToe;
 
+import java.util.HashMap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,6 +9,7 @@ import com.shephertz.app42.gaming.multiplayer.client.command.WarpResponseResultC
 import com.shephertz.app42.gaming.multiplayer.client.events.ChatEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LobbyData;
+import com.shephertz.app42.gaming.multiplayer.client.events.MoveEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomData;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.UpdateEvent;
@@ -452,6 +455,79 @@ public class GameActivity extends Activity implements RoomRequestListener, Notif
 				}            	
             }
         });
+		
+	}
+
+	@Override
+	public void onGameStarted(String arg0, String arg1, String arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onGameStopped(String arg0, String arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMoveCompleted(MoveEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onNextTurnRequest(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPrivateChatReceived(String arg0, String arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPrivateUpdateReceived(String arg0, byte[] arg1, boolean arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUserChangeRoomProperty(RoomData arg0, String arg1,
+			HashMap<String, Object> arg2, HashMap<String, String> arg3) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUserPaused(String arg0, boolean arg1, String arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUserResumed(String arg0, boolean arg1, String arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onLockPropertiesDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUnlockPropertiesDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUpdatePropertyDone(LiveRoomInfoEvent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
  

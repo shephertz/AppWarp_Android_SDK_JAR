@@ -7,6 +7,7 @@ import com.shephertz.app42.gaming.multiplayer.client.events.AllRoomsEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.AllUsersEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LiveRoomInfoEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.LiveUserInfoEvent;
+import com.shephertz.app42.gaming.multiplayer.client.events.MatchedRoomsEvent;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
 import com.shephertz.app42.gaming.multiplayer.client.listener.RoomRequestListener;
 import com.shephertz.app42.gaming.multiplayer.client.listener.ZoneRequestListener;
@@ -60,7 +61,7 @@ public class UserHomeActivity extends Activity implements ZoneRequestListener, R
 						
 		progressDialog = ProgressDialog.show(this, "", "creating new room");
 		AsyncApp42ServiceApi.getMyWarpClient().addZoneRequestListener(this);
-		AsyncApp42ServiceApi.getMyWarpClient().createRoom(newGameName.getText().toString(), userName, 2);
+		AsyncApp42ServiceApi.getMyWarpClient().createRoom(newGameName.getText().toString(), userName, 2, null);
 
 	}
 	
@@ -228,6 +229,30 @@ public class UserHomeActivity extends Activity implements ZoneRequestListener, R
 
 	@Override
 	public void onSetCustomUserDataDone(LiveUserInfoEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onLockPropertiesDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUnlockPropertiesDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUpdatePropertyDone(LiveRoomInfoEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onGetMatchedRoomsDone(MatchedRoomsEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}	

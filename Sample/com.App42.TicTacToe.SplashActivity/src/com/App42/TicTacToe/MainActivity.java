@@ -134,5 +134,11 @@ public class MainActivity extends Activity implements AsyncApp42ServiceApi.App42
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void onInitUDPDone(byte arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
