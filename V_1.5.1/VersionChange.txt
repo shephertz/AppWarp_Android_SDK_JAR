@@ -1,2 +1,0 @@
-* Bug fixes in corner cases of connect/disconnect/recover handling
-

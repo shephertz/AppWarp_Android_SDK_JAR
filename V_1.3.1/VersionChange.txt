@@ -1,4 +1,0 @@
-Bug Fixes
-* Fix bug in updatepeers API where the byte array with certain payloads gets decoded incorrectly.
-* Fix random concurrent access exception bug when firing connection event with multiple listeners.
-* Allow non string values in room properties

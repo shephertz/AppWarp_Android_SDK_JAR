@@ -1,2 +1,0 @@
-* Bug fixes CPU usage (MessageDispatchThread)
-

@@ -1,4 +1,0 @@
-* Connection Resiliency update.
-* Add setRecoveryAllowance and RecoverConnection API to WarpClient
-* Added 2 new connection states i.e. Recovering and Disconnecting
-* Added 2 new callbacks to NotificationListener i.e. onUserPaused and OnUserResumed

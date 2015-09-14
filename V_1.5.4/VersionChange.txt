@@ -1,1 +1,0 @@
-* Getter/Setter method added for address and keys  to WarpClient

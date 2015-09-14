@@ -1,4 +1,0 @@
-* Turn Based Room Updated.
-* startGame and stopGame API Added 
-* callBack on different thread added
-

@@ -1,5 +1,0 @@
-* Added GetRoomsInRange and JoinRoomsInRange API methods.
-* Deprecated the GetRoomWithNUser and JoinRoomWithNUser APIs as they are superceeded by the above.
-* Add Support out of the box turn based rooms with finite turn time
-* Add private chat messages
-* Add APIs to lock and unlock a room's properties to solve distributed synchronization problems
