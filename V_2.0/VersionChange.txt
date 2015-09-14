@@ -1,0 +1,1 @@
+*  API now returns two new JSON parameters : recoveryTime, and autoRecovery. If autoRecover is true, SDK automatically recovers the previous session of the user within the recovery allowance time.autoRecover is true, Warpclient automatically calls recoverConnection API.
