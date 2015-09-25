@@ -1,0 +1,2 @@
+*  Added new API  for users count with 'getUsersCount()'
+*  Added new API  for rooms count with 'getRoomsCount()' 
