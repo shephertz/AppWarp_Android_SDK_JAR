@@ -255,5 +255,23 @@ public class UserHomeActivity extends Activity implements ZoneRequestListener, R
 	public void onGetMatchedRoomsDone(MatchedRoomsEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.shephertz.app42.gaming.multiplayer.client.listener.ZoneRequestListener#onGetRoomsCountDone(com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent)
+	 */
+	@Override
+	public void onGetRoomsCountDone(RoomEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.shephertz.app42.gaming.multiplayer.client.listener.ZoneRequestListener#onGetUsersCountDone(com.shephertz.app42.gaming.multiplayer.client.events.AllUsersEvent)
+	 */
+	@Override
+	public void onGetUsersCountDone(AllUsersEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}	
 }
