@@ -15,8 +15,8 @@ public class Utilities {
 
     public static String localUsername = "";
     
-    public static final String API_KEY = "1adc4a4cf9563445d1326da3485f74ec7e9286542f1f3c6b36691d100fb3c592";
-    public static final String SECRET_KEY = "f11b0f2a47a699c7e5c5677a4807c53dbb98a60a08ba9598b74adf64a3616557";
+    public static final String API_KEY = "Your AppWarp API Key";
+    public static final String SECRET_KEY = "Your AppWarp Secret Key";
     
     public static final String EMPTY_BOARD_STATE = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
     
