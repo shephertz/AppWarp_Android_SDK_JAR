@@ -1,0 +1,5 @@
+*  Added new API's :
+	1. get online status of user - getUserStatus(String username) 
+	2. join and subcribe room API - joinAndSubcribeRoom(String roomId) 
+	3. leave and unsubcribe room API - leaveAndUnsubcribeRoom(String roomId) 		
+

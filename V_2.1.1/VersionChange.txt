@@ -1,0 +1,1 @@
+*  Added new API  for rooms on range & properties filteration with getRoomInRangeWithProperties()'
