@@ -1,0 +1,6 @@
+*  Added new API's :
+ ** Chat History implementation 
+	1. setDBName and enableChatAPI
+	2. sendChat new API with storage on App42
+	3. get Chat History based on roomID
+	
