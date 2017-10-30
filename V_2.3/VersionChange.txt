@@ -1,0 +1,5 @@
+*  Exception handled:
+ ** 
+	1. java.nio.channels.CancelledKeyException handled 
+	
+	
